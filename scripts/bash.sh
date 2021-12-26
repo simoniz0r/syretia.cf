@@ -12,7 +12,7 @@ bash_api() {
     printf "%s\n" "$program" > /home/webhookd/runner/bash/"$dir_name"/bashrun
     # printf "%s\n" "export exitcode=$?" >> /home/webhookd/runner/bash/"$dir_name"/bashrun
 	# load in custom variables and functions
-	source /home/syretia/webhookd/scripts/.bashrc
+	source /home/syretia/git/syretia.cf/scripts/.bashrc
     # cd to only dir 'webhookd' user can write to
     cd /home/webhookd/runner/bash/"$dir_name/run"
     # set start time
