@@ -1,4 +1,4 @@
 #!/bin/bash
 # trap '{ sudo pkill webhookd ; exit ; }' EXIT SIGINT
 cd ~/git/syretia.cf
-su webhookd -c ~/git/syreti.cf/webhookdstart
+su webhookd -c ~/git/syretia.cf/webhookdstart
