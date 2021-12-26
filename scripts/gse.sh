@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SEARCH_QUERY="$(perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$q")"
+SEARCH_QUERY="$(echo "$q" | jq -Rr '@uri')"
 SEARCH_RESULTS="$(curl -sL "https://www.w3.org/services/html2txt?url=https%3A%2F%2Fgoogle.com%2Fsearch%3Fq%3D${SEARCH_QUERY}&noinlinerefs=on&nonums=on&endrefs=on" -A "$RANDOM" | \
 grep -Po 'https:\/\/www\.google\.com\/url\?q=\K.*' | \
 perl -pe 's%&sa=.&ved=.*%%g' | \
