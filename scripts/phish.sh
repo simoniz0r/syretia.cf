@@ -12,7 +12,7 @@ if [[ "$phisherman" == "true" ]]; then
 fi
 
 afdata="$(jq -n --arg d "$domain" '.message |= $d')"
-antifish="$(curl -sLX POST -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata")"
+antifish="$(curl -sLX POST -H 'Content-Type: application/json' -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata")"
 if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     source="$(echo "$antifish" | jq -r '.matches[0].source')"
     jq -n --arg s "$source" '.phish |= true | .source |= $s'
