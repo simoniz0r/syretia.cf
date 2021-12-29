@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 checkkey() {
 	# convert key input to sha256sum
 	key_hash="$(printf "%s\n" "$key" | sha256sum | cut -f1 -d' ')"

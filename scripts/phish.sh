@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 if [[ -z "$domain" ]]; then
     jq -cn '.phish |= false | .source |= null'
     exit 0

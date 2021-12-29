@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 if [[ -z "$key" || -z "$hash" || -z "$action" ]]; then
     jq -n '.error |= "Missing required info"'
     exit 0

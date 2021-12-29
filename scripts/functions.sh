@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 json='{"source_code":"","input":"","language":"bash","api_key":"guest","network":true,"longpoll":true,"longpoll_timeout":30}'
 
 if [[ -z "$@" ]]; then

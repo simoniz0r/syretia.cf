@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 if [[ -n "$alg" && -n "$str" ]]; then
     echo -n "$str" | ${alg}sum | cut -f1 -d' '
 else

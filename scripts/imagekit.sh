@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 key="$(echo "$@" | jq -r '.key'):"
 url="$(echo "$@" | jq -r '.url')"
 name="$(echo "$@" | jq -r '.name')"

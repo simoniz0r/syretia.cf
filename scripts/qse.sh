@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 if [[ -n "$q" ]]; then
 	q="$(echo "$q" | jq -Rr '@uri' | perl -pe 's/%20/+/g')"
 	# agent="$(curl -sL 'https://generate-name.net/user-agent' | pup 'td.name text{}' | head -n 1 | perl -pe 'chomp if eof')"

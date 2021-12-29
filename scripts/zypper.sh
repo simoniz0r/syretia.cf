@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf /home/webhookd/logs/*
+
 printf "%s\n" "[$(curl -sL -u \
 "zyp_user:zyp_password_1" \
 "https://api.opensuse.org/search/published/binary/id?match=%40name%3D%27$q%27" | \
