@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "$@" > ~/imgix/.echo
-cat ~/imgix/.echo
+echo "$@" > ~/out/echo
+cat ~/out/echo
