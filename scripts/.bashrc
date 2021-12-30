@@ -1,6 +1,6 @@
 # set neofetch to output stdout mode and not use config
 neofetch() {
-	neofetch --no_config users public_ip distro model kernel uptime packages shell term cpu cpu_usage gpu disk memory | perl -pe 's%(.)%\u$1%'
+	/usr/bin/neofetch --no_config users public_ip distro model kernel uptime packages shell term cpu cpu_usage gpu disk memory | perl -pe 's%(.)%\u$1%'
 }
 
 # get google search results
