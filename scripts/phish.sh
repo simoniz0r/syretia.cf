@@ -21,7 +21,7 @@ if [[ "$phisherman" == "true" ]]; then
 fi
 
 if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
-    source="$(echo "$antifish" | jq -r '.matches[0].source')"
+    source="anti-fish.bitflow.dev ($(echo "$antifish" | jq -r '.matches[0].source'))"
     jq -cn --arg d "$domain" --arg s "$source" '.domain |= $d | .phish |= true | .source |= $s'
     exit 0
 fi
