@@ -68,9 +68,9 @@ key: xubuntu 10
     reasmb: {exec;infogit;xubuntu}
 key: weather 10
   decomp: *weather in*
-    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather\sin/i};1};/\?/g;}}
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather\sin/i};1};/\sqquestion/g;}}
   decomp: *weather*
-    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather/i};1};/\?/g;}}
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather/i};1};/\sqquestion/g;}}
 key: calc 10
   decomp: *calc*
     reasmb: {usernick}: {jget;{regexsplit;{args};/calc/i};1} equals {exec;mathjs;{jget;{regexsplit;{args};/calc/i};1}}
