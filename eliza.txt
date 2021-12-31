@@ -1,0 +1,82 @@
+####################################################################
+# ---{ B E G I N   D E F A U L T   S C R I P T   D A T A }----------
+#
+#  This script was prepared by Chris Hayden.  Hayden's Eliza 
+#  program was written in Java, however, it attempted to match 
+#  the functionality of Weizenbaum's original program as closely 
+#  as possible.  
+#
+#  Hayden's script format was quite different from Weizenbaum's, 
+#  but it maintained the same content.  I have adapted Hayden's 
+#  script format, since it was simple and convenient enough 
+#  for my purposes.  
+#
+#  I've made small modifications here and there.  
+#
+#
+#
+initial: How do you do.  Please tell me your problem.
+final: Goodbye.  It was nice talking to you.
+quit: bye
+pre: dont don't
+synon: be am is are was
+key: xnone -1
+  decomp: *
+    reasmb: {exec;qse;{args}}
+key: qquestion 1
+  decomp: *qquestion*
+    reasmb: {exec;dialogpt;{regexreplace;{args};/\sqquestion/g;?}}
+key: chat 10
+  decomp: *chat*
+    reasmb: {exec;dialogpt;{jget;{regexsplit;{args};/chat\s/i};1}}
+key: fuck 10
+  decomp: * 
+    reasmb: goto xswear
+key: fucker 10
+  decomp: * 
+    reasmb: goto xswear
+key: shit 10
+  decomp: * 
+    reasmb: goto xswear
+key: damn 10
+  decomp: * 
+    reasmb: goto xswear
+key: shut 10
+  decomp: * shut up *
+    reasmb: goto xswear
+key: xswear 10
+  decomp: * 
+    reasmb: {randchoose;Does it make you feel strong to use that kind of language?;Are you venting your feelings now?;Are you angry?;Does this topic make you feel angry?;Is something making you feel angry?Does using that kind of language make you feel better?}
+key: info 10
+  decomp: *info*
+    reasmb: {exec;infogit;{jget;{regexreplace;{args};/info\s/i;};1}}
+key: ubuntu 10
+  decomp: *ubuntu mate*
+    reasmb: {exec;infogit;ubuntu mate}
+  decomp: *ubuntu budgie*
+    reasmb: {exec;infogit;ubuntu budgie}
+  decomp: *ubuntu*
+    reasmb: {exec;infogit;ubuntu}
+key: kubuntu 10
+  decomp: *kubuntu*
+    reasmb: {exec;infogit;kubuntu}
+key: lubuntu 10
+  decomp: *lubuntu*
+    reasmb: {exec;infogit;lubuntu}
+key: xubuntu 10
+  decomp: *xubuntu*
+    reasmb: {exec;infogit;xubuntu}
+key: weather 10
+  decomp: *weather in*
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather\sin/i};1};/\?/g;}}
+  decomp: *weather*
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather/i};1};/\?/g;}}
+key: calc 10
+  decomp: *calc*
+    reasmb: {usernick}: {jget;{regexsplit;{args};/calc/i};1} equals {exec;mathjs;{jget;{regexsplit;{args};/calc/i};1}}
+key: calculate 10
+  decomp: *calculate*
+    reasmb: {usernick}: {jget;{regexsplit;{args};/calculate/i};1} equals {exec;mathjs;{jget;{regexsplit;{args};/calculate/i};1}}
+key: convert 10
+  decomp: *convert*
+    reasmb: {usernick}: {jget;{regexsplit;{args};/convert/i};1} equals {exec;mathjs;{jget;{regexsplit;{args};/convert/i};1}}
