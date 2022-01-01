@@ -22,7 +22,7 @@ fi
 
 if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     source="anti-fish.bitflow.dev ($(echo "$antifish" | jq -r '.matches[0].source'))"
-    jq -cn --arg d "$domain" --argjson s "$source" --arg r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
+    jq -cn --arg d "$domain" --arg s "$source" --argjson r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
     exit 0
 fi
 
