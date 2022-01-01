@@ -11,7 +11,7 @@ afdata="$(jq -n --arg d "$domain" '.message |= $d')"
 
 phisherman="$(curl -sLA 'blargbot https://blargbot.xyz' "https://api.phisherman.gg/v1/domains/$domain" &)"
 antifish="$(curl -sLX POST -H 'Content-Type: application/json' -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata" &)"
-gsb="$(curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain" | tail -n 1 &)"
+gsb="$(curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain" &)"
 
 wait
 
@@ -26,6 +26,7 @@ if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     exit 0
 fi
 
+gsb="$(echo "$gsb" | tail -n 1)"
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
     jq -cn --arg d "$domain" --argjson r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
     exit 0
