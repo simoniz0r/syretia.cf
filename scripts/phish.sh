@@ -22,12 +22,12 @@ fi
 
 if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     source="anti-fish.bitflow.dev ($(echo "$antifish" | jq -r '.matches[0].source'))"
-    jq -cn --arg d "$domain" --arg s "$source" --arg r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
+    jq -cn --arg d "$domain" --argjson s "$source" --arg r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
     exit 0
 fi
 
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
-    jq -cn --arg d "$domain" --arg r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
+    jq -cn --arg d "$domain" --argjson r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
     exit 0
 fi
 
