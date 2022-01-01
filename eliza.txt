@@ -23,9 +23,6 @@ synon: be am is are was
 key: xnone -1
   decomp: *
     reasmb: {exec;qse;{args}}
-key: qquestion 1
-  decomp: *qquestion*
-    reasmb: {exec;dialogpt;{regexreplace;{args};/\sqquestion/g;?}}
 key: hey 5
   decomp: *hey*
     reasmb: {exec;dialogpt;{jget;{regexsplit;{args};/hey\s/i};1}}
@@ -68,9 +65,9 @@ key: xubuntu 10
     reasmb: {exec;infogit;xubuntu}
 key: weather 10
   decomp: *weather in*
-    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather\sin/i};1};/\sqquestion/g;}}
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather\sin/i};1};/\?/g;}}
   decomp: *weather*
-    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather/i};1};/\sqquestion/g;}}
+    reasmb: {exec;openweather;{regexreplace;{jget;{regexsplit;{args};/weather/i};1};/\?/g;}}
 key: calc 10
   decomp: *calc*
     reasmb: {usernick}: {jget;{regexsplit;{args};/calc/i};1} equals {exec;mathjs;{jget;{regexsplit;{args};/calc/i};1}}
