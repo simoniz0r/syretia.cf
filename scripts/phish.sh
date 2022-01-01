@@ -1,5 +1,17 @@
 #!/bin/bash
 
+phisherman() {
+    curl -sLA 'blargbot https://blargbot.xyz' "https://api.phisherman.gg/v1/domains/$domain" > /home/webhookd/out/.phisherman."$timens"
+}
+
+antifish() {
+    curl -sLX POST -H 'Content-Type: application/json' -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata" > /home/webhookd/out/.antifish."$timens"
+}
+
+gsb() {
+    curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain" | tail -n 1 > /home/webhookd/out/.gsb."$timens"
+}
+
 rm -rf /home/webhookd/logs/*
 
 if [[ -z "$domain" ]]; then
@@ -7,13 +19,22 @@ if [[ -z "$domain" ]]; then
     exit 0
 fi
 
-afdata="$(jq -n --arg d "$domain" '.message |= $d')"
+export timens="$(date +%s%N)"
+export afdata="$(jq -n --arg d "$domain" '.message |= $d')"
 
-phisherman="$(curl -sLA 'blargbot https://blargbot.xyz' "https://api.phisherman.gg/v1/domains/$domain" &)"
-antifish="$(curl -sLX POST -H 'Content-Type: application/json' -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata" &)"
-gsb="$(curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain" &)"
+phisherman &
+antifish &
+gsb &
 
 wait
+
+phisherman="$(cat /home/webhookd/out/.phisherman."$timens")"
+antifish="$(cat /home/webhookd/out/.antifish."$timens")"
+gsb="$(cat /home/webhookd/out/.gsb."$timens")"
+
+rm -rf /home/webhookd/out/.phisherman."$timens"
+rm -rf /home/webhookd/out/.antifish."$timens"
+rm -rf /home/webhookd/out/.gsb."$timens"
 
 if [[ "$phisherman" == "true" ]]; then
     jq -cn --arg d "$domain" '.domain |= $d | .phish |= true | .source |= "phisherman.gg" | .raw |= true'
@@ -26,7 +47,6 @@ if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     exit 0
 fi
 
-gsb="$(echo "$gsb" | tail -n 1)"
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
     jq -cn --arg d "$domain" --argjson r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
     exit 0
