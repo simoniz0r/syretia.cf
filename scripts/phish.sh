@@ -16,18 +16,18 @@ gsb="$(curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3
 wait
 
 if [[ "$phisherman" == "true" ]]; then
-    jq -cn --arg d "$domain" '.domain |= $d | .phish |= true | .source |= "phisherman.gg"'
+    jq -cn --arg d "$domain" '.domain |= $d | .phish |= true | .source |= "phisherman.gg" | .raw |= true'
     exit 0
 fi
 
 if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
     source="anti-fish.bitflow.dev ($(echo "$antifish" | jq -r '.matches[0].source'))"
-    jq -cn --arg d "$domain" --arg s "$source" '.domain |= $d | .phish |= true | .source |= $s'
+    jq -cn --arg d "$domain" --arg s "$source" --arg r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
     exit 0
 fi
 
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
-    jq -cn --arg d "$domain" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing"'
+    jq -cn --arg d "$domain" --arg r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
     exit 0
 fi
 
