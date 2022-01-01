@@ -26,8 +26,8 @@ key: xnone -1
 key: qquestion 1
   decomp: *qquestion*
     reasmb: {exec;dialogpt;{regexreplace;{args};/\sqquestion/g;?}}
-key: chat 10
-  decomp: *chat*
+key: hey 5
+  decomp: *hey*
     reasmb: {exec;dialogpt;{jget;{regexsplit;{args};/chat\s/i};1}}
 key: fuck 10
   decomp: * 
