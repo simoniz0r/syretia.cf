@@ -1,3 +1,7 @@
 #!/bin/bash
 
-curl -sL 'https://api-inference.huggingface.co/models/microsoft/DialoGPT-large' -H "Authorization: Bearer $token" -H 'content-type: application/json' --data-raw "$@"
+if [[ -z "$model" ]]; then
+    model="facebook/blenderbot-400M-distill"
+fi
+
+curl -sL "https://api-inference.huggingface.co/models/$model" -H "Authorization: Bearer $token" -H 'content-type: application/json' --data-raw "$@"
