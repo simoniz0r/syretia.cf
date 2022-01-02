@@ -23,6 +23,9 @@ synon: be am is are was
 key: xnone -1
   decomp: *
     reasmb: {exec;qse;{args}}
+key: what 5
+  decomp: * what is *
+    reasmb: {exec;infogit;{regexreplace;{jget;{regexsplit;{args};/.*what\sis\s/i};1};/\?/g;}}
 key: hey 10
   decomp: *hey*
     reasmb: {exec;dialogpt;{jget;{regexsplit;{args};/hey\s/i};1}}
@@ -47,9 +50,6 @@ key: xswear 10
 key: info 10
   decomp: *info*
     reasmb: {exec;infogit;{jget;{regexsplit;{args};/info\s/i};1}}
-key: what 10
-  decomp: * what is *
-    reasmb: {exec;infogit;{regexreplace;{jget;{regexsplit;{args};/.*what\sis\s/i};1};/\?/g;}}
 key: ubuntu 10
   decomp: *ubuntu mate*
     reasmb: {exec;infogit;ubuntu mate}
