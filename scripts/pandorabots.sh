@@ -20,6 +20,7 @@ awk '/^A.L.I.C.E./{found=1} found{print; if (/^Human/) exit}' | \
 perl -pe 's%(^A.L.I.C.E.*|^Human:.*)%%g' | \
 sed '/^$/d' | \
 cut -f2- -d' ' | \
+tr -d '\n' | \
 perl -pe 's%^\. $%I do not know.%')"
 
 jq -cn --arg msg "$message_raw" --arg cust "$botcust" --arg resp "$response" '.botcust |= $cust | .message |= $msg | .response |= $resp'
