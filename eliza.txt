@@ -23,7 +23,7 @@ synon: be am is are was
 key: xnone -1
   decomp: *
     reasmb: {exec;qse;{args}}
-key: hey 5
+key: hey 10
   decomp: *hey*
     reasmb: {exec;dialogpt;{jget;{regexsplit;{args};/hey\s/i};1}}
 key: fuck 10
