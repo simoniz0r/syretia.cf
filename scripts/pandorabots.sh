@@ -15,6 +15,6 @@ fi
 
 curl_resp="$(curl -sL "https://pandorabots.com/pandora/talk?botid=$botid" -d "message=$message&botcust2=$botcust" 2>/dev/null || true)"
 botcust="$(pup 'input[name="botcust2"] attr{value}' <<<"$curl_resp")"
-response="$(pup 'text{}' <<<"$curl_resp" | grep -i '^ [a-z0-9]' | jq -Rsr 'split("\n") | .[1]' | cut -f2- -d' ')"
+response="$(pup 'text{}' <<<"$curl_resp" | grep -m2 -A1 'A.L.I.C.E:' | tail -n 1 | cut -f2- -d' ' | perl -pe 's%^\. $%I do not know.%')"
 
 jq -cn --arg msg "$message_raw" --arg cust "$botcust" --arg resp "$response" '.botcust |= $cust | .message |= $msg | .response |= $resp'
