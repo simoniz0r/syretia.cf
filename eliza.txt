@@ -47,6 +47,9 @@ key: xswear 10
 key: info 10
   decomp: *info*
     reasmb: {exec;infogit;{jget;{regexsplit;{args};/info\s/i};1}}
+key: what 10
+  decomp: * what is *
+    reasmb: {exec;infogit;{regexreplace;{jget;{regexsplit;{args};/.*what\sis\s/i};1};/\?/g;}}
 key: ubuntu 10
   decomp: *ubuntu mate*
     reasmb: {exec;infogit;ubuntu mate}
