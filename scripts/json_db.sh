@@ -66,7 +66,7 @@ json_db_set() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
@@ -155,7 +155,7 @@ json_db_get() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
@@ -226,7 +226,7 @@ json_db_count() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
@@ -264,7 +264,7 @@ json_db_list() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
@@ -313,7 +313,7 @@ json_db_delete() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
@@ -354,7 +354,7 @@ json_db_drop() {
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
         auth_file=".${json_bin}_auth"
     elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
-        auth_file=".${json_bin}_auth"
+        auth_file=".default_auth"
     fi
 
     if [[ -n "$auth_file" ]]; then
