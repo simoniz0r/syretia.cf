@@ -62,14 +62,21 @@ json_db_set() {
         exit 0
     fi
 
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_write="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.write?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_write="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.write?' 2>/dev/null || true)"
         if [[ "$json_write" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is write protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
@@ -144,14 +151,21 @@ json_db_get() {
         exit 0
     fi
 
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_read="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.read?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_read="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.read?' 2>/dev/null || true)"
         if [[ "$json_read" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is read protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
@@ -208,14 +222,21 @@ json_db_count() {
         exit 0
     fi
 
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_read="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.read?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_read="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.read?' 2>/dev/null || true)"
         if [[ "$json_read" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is read protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
@@ -239,14 +260,21 @@ json_db_list() {
         exit 0
     fi
 
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_read="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.read?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_read="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.read?' 2>/dev/null || true)"
         if [[ "$json_read" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is read protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
@@ -280,14 +308,22 @@ json_db_delete() {
         jq -cn '.error |= "Invalid argument id."'
         exit 0
     fi
+
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_write="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.write?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_write="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.write?' 2>/dev/null || true)"
         if [[ "$json_write" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is write protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
@@ -314,14 +350,21 @@ json_db_drop() {
         exit 0
     fi
 
+    unset auth_file
     if [[ -f "$JSON_DB_DIR/.${json_bin}_auth" ]]; then
-        json_write="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.write?' 2>/dev/null || true)"
+        auth_file=".${json_bin}_auth"
+    elif [[ -f "$JSON_DB_DIR/.default_auth" ]]; then
+        auth_file=".${json_bin}_auth"
+    fi
+
+    if [[ -n "$auth_file" ]]; then
+        json_write="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.write?' 2>/dev/null || true)"
         if [[ "$json_write" == "true" ]]; then
             if [[ -z "$JSON_DB_TOKEN" ]]; then
                 jq -cn '.error |= "This bin is write protected. Missing required variable JSON_DB_TOKEN."'
                 exit 0
             fi
-            json_hash="$(cat "$JSON_DB_DIR/.${json_bin}_auth" | jq -r '.hash?' 2>/dev/null || true)"
+            json_hash="$(cat "$JSON_DB_DIR/$auth_file" | jq -r '.hash?' 2>/dev/null || true)"
             token_hash="$(echo -n "$JSON_DB_TOKEN" | sha256sum | cut -f1 -d' ')"
             if [[ "$json_hash" != "$token_hash" ]]; then
                 jq -cn '.error |= "Invalid authorization. Variable JSON_DB_TOKEN does not match stored hash for this bin."'
