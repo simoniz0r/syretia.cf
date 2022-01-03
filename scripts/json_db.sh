@@ -41,14 +41,14 @@ json_db_help() {
 }
 
 json_db_set() {
-    local json_bin="$1"
-    local json_id="$2"
+    json_bin="$1"
+    json_id="$2"
     if [[ -z "$4" ]]; then
-        local json_path=""
-        local value="$3"
+        json_path=""
+        value="$3"
     else
-        local json_path="$3"
-        local value="$4"
+        json_path="$3"
+        value="$4"
     fi
 
     if [[ -z "$value" && ! -t 0 ]]; then
@@ -98,18 +98,18 @@ json_db_set() {
     if [[ -z "$json_path" ]]; then
         # check if json is valid
         if echo "$value" | jq '.' &> /dev/null; then
-        local json_document="$(echo "$value" | jq -c '.')"
+        json_document="$(echo "$value" | jq -c '.')"
         else
             jq -cn --arg er "$(echo "$value" | jq '.' 2>&1 | cut -f4- -d':' | cut -f2- -d' ')" '.error |= $er'
             exit 0
         fi
     else
         if [[ "$(jq -crn --argjson j "$value" '$j' 2>/dev/null)" != "" && "$value" == [0-9]* ]]; then
-            local json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
+            json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
         elif [[ "$(jq -crn --argjson j "$value" '$j' 2>/dev/null)" != "" ]]; then
-            local json_document="$(jq -c --argjson v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
+            json_document="$(jq -c --argjson v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
         else
-            local json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
+            json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
         fi
     fi
 
@@ -134,12 +134,12 @@ json_db_set() {
 }
 
 json_db_get() {
-    local json_bin="$1"
-    local json_id="$2"
+    json_bin="$1"
+    json_id="$2"
     if [[ -n "$3" ]]; then
-        local json_path="$3"
+        json_path="$3"
     else
-        local json_path="."
+        json_path="."
     fi
     if [[ -z "$json_bin" ]]; then
         jq -cn '.error |= "Missing required argument bin."'
@@ -211,7 +211,7 @@ json_db_get() {
 }
 
 json_db_count() {
-    local json_bin="$1"
+    json_bin="$1"
     if [[ -z "$json_bin" ]]; then
         jq -cn '.error |= "Missing required argument bin."'
         exit 0
@@ -249,7 +249,7 @@ json_db_count() {
 }
 
 json_db_list() {
-    local json_bin="$1"
+    json_bin="$1"
     if [[ -z "$json_bin" ]]; then
         jq -cn '.error |= "Missing required argument bin."'
         exit 0
@@ -287,8 +287,8 @@ json_db_list() {
 }
 
 json_db_delete() {
-    local json_bin="$1"
-    local json_id="$2"
+    json_bin="$1"
+    json_id="$2"
     if [[ -z "$json_bin" ]]; then
         jq -cn '.error |= "Missing required argument bin."'
         exit 0
@@ -339,7 +339,7 @@ json_db_delete() {
 }
 
 json_db_drop() {
-    local json_bin="$1"
+    json_bin="$1"
     if [[ -z "$json_bin" ]]; then
         jq -cn '.error |= "Missing required argument bin."'
         exit 0
@@ -386,7 +386,7 @@ json_db_drop() {
 }
 
 json_db_main() {
-    local cmd="$1"
+    cmd="$1"
 
     if [[ -z $cmd ]]; then
         json_db_help
