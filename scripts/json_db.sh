@@ -37,7 +37,18 @@ json_db_help() {
     --arg a7 "help" \
     --arg u7 "help" \
     --arg d7 "Displays help" \
-    '{"name":"json_db","version":$ver,"usage":"json_db argument <argument-specific-options>","descripton":"A simple JSON database.","arguments":[{"name":$a1,"usage":$u1,"description":$d1},{"name":$a2,"usage":$u2,"description":$d2},{"name":$a3,"usage":$u3,"description":$d3},{"name":$a4,"usage":$u4,"description":$d4},{"name":$a5,"usage":$u5,"description":$d5},{"name":$a6,"usage":$u6,"description":$d6},{"name":$a7,"usage":$u7,"description":$d7}]}'
+    '{"name":"json_db",
+    "version":$ver,
+    "usage":"json_db argument <argument-specific-options>",
+    "descripton":"A simple JSON database.",
+    "arguments":[
+        {"name":$a1,"usage":$u1,"description":$d1},
+        {"name":$a2,"usage":$u2,"description":$d2},
+        {"name":$a3,"usage":$u3,"description":$d3},
+        {"name":$a4,"usage":$u4,"description":$d4},
+        {"name":$a5,"usage":$u5,"description":$d5},
+        {"name":$a6,"usage":$u6,"description":$d6},
+        {"name":$a7,"usage":$u7,"description":$d7}]}'
 }
 
 json_db_set() {
