@@ -37,6 +37,16 @@ json_db_help() {
     --arg a7 "help" \
     --arg u7 "help" \
     --arg d7 "Displays help" \
+    --arg vn1 "JSON_DB_DIR" \
+    --arg vd1 "Set the directory to JSON files in." \
+    --arg vn2 "JSON_DB_TOKEN" \
+    --arg vd2 "Set the token to be used for authenticating with read and/or write protected bins." \
+    --arg vn3 "JSON_DB_PRETTY" \
+    --arg vd3 "When set to true, JSON will be pretty printed." \
+    --arg ad1 "To read and/or write protect bins, authentication files can be placed in 'JSON_DB_DIR'." \
+    --arg ad2 "For all bins, create the file 'JSON_DB_DIR/.default_auth' as shown in the example below." \
+    --arg ad3 "For individual bins (overrides default), use 'JSON_DB_DIR/.BinNameHere_auth'." \
+    --arg ad4 "Export the 'JSON_DB_TOKEN' variable with the contents of your non-encrypted token." \
     '{"name":"json_db",
     "version":$ver,
     "usage":"json_db argument <argument-specific-options>",
@@ -48,7 +58,27 @@ json_db_help() {
         {"name":$a4,"usage":$u4,"description":$d4},
         {"name":$a5,"usage":$u5,"description":$d5},
         {"name":$a6,"usage":$u6,"description":$d6},
-        {"name":$a7,"usage":$u7,"description":$d7}]}'
+        {"name":$a7,"usage":$u7,"description":$d7}
+    ],
+    "variables":[
+        {"name":$vn1,"description":$vd1},
+        {"name":$vn2,"description":$vd2},
+        {"name":$vn3,"description":$vd3}
+    ],
+    "authentication":{
+        "description":[$ad1,$ad2,$ad3,$ad4],
+        "keys":{
+            "hash":"Token for this bin in sha256 encrypted format.",
+            "write":"Set to true to enable write protection or false to disable.",
+            "read":"Set to true to enable read protection or false to disable."
+        },
+        "example":{
+            "hash":"befeafb844fd6f296ebc9f1e0cb519205c9359b1d69d5298b1e95add129e529b",
+            "write":true,
+            "read":true
+        }
+    }
+    }'
 }
 
 json_db_set() {
