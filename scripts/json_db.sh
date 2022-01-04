@@ -18,10 +18,12 @@ json_db_help() {
     jq -n --arg ver "$VERSION" \
     --arg a1 "set" \
     --arg u1 "set <bin> <id> [path] <json>" \
-    --arg d1 "Writes JSON and returns what was written. Optionally, path can also be specified (uses 'jq' syntax)." \
+    --arg d11 "Writes JSON and returns what was written." \
+    --arg d12 "Optionally, path can also be specified (uses 'jq' syntax)." \
     --arg a2 "get" \
     --arg u2 "get <bin> <id> [path]" \
-    --arg d2 "Retrieves JSON by bin and id. Optionally, path can also be specified (uses 'jq' syntax)." \
+    --arg d21 "Retrieves JSON by bin and id." \
+    --arg d22 "Optionally, path can also be specified (uses 'jq' syntax)." \
     --arg a3 "count" \
     --arg u3 "count <bin>" \
     --arg d3 "Total number of JSON files in the bin." \
@@ -52,8 +54,8 @@ json_db_help() {
     "usage":"json_db argument <argument-specific-options>",
     "descripton":"A simple JSON database.",
     "arguments":[
-        {"name":$a1,"usage":$u1,"description":$d1},
-        {"name":$a2,"usage":$u2,"description":$d2},
+        {"name":$a1,"usage":$u1,"description":[$d11,$d12]},
+        {"name":$a2,"usage":$u2,"description":[$d21,$d22]},
         {"name":$a3,"usage":$u3,"description":$d3},
         {"name":$a4,"usage":$u4,"description":$d4},
         {"name":$a5,"usage":$u5,"description":$d5},
