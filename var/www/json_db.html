@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>json_db docs</title>
+  <meta name="description" content="A simple JSON database.">
+
+  
+  
+  <link rel="stylesheet" href="http://syretia.cf/docs/assets/style.css ">
+
+  <link rel="canonical" href="http://syretia.cf/docs/index/json_db.html">
+  <link rel="alternate" type="application/rss+xml" title="syretia.cf" href="/feed.xml">
+  <link rel="shortcut icon" type="image/png" href="https://u.teknik.io/kpGfq.ico"/>
+
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <script
+  type="text/javascript"
+  src="//code.jquery.com/jquery-2.0.0.js"
+  
+></script>
+
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+
+<style id="compiled-css" type="text/css">
+    pre {
+ background-color: #282828;
+ border: 1px solid 282828;
+ padding: 10px 20px;
+ color: #B6B6B6;
+ }
+.json-key {
+ color: brown;
+ }
+.json-value {
+ color: #216590;
+ }
+.json-string {
+ color: olive;
+ }
+
+  /* EOS */
+</style>
+
+<script id="insert"></script>
+
+
+  <script>
+    const customConsole = (w) => {
+      const pushToConsole = (payload, type) => {
+        w.parent.postMessage({
+          console: {
+            payload: stringify(payload),
+            type:    type
+          }
+        }, "*")
+      }
+
+      w.onerror = (message, url, line, column) => {
+        // the line needs to correspond with the editor panel
+        // unfortunately this number needs to be altered every time this view is changed
+        line = line - 70
+        if (line < 0){
+          pushToConsole(message, "error")
+        } else {
+          pushToConsole(`[${line}:${column}] ${message}`, "error")
+        }
+      }
+
+      let console = (function(systemConsole){
+        return {
+          log: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "log")
+            systemConsole.log.apply(this, args)
+          },
+          info: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "info")
+            systemConsole.info.apply(this, args)
+          },
+          warn: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "warn")
+            systemConsole.warn.apply(this, args)
+          },
+          error: function(){
+            let args = Array.from(arguments)
+            pushToConsole(args, "error")
+            systemConsole.error.apply(this, args)
+          },
+          system: function(arg){
+            pushToConsole(arg, "system")
+          },
+          clear: function(){
+            systemConsole.clear.apply(this, {})
+          },
+          time: function(){
+            let args = Array.from(arguments)
+            systemConsole.time.apply(this, args)
+          },
+          assert: function(assertion, label){
+            if (!assertion){
+              pushToConsole(label, "log")
+            }
+
+            let args = Array.from(arguments)
+            systemConsole.assert.apply(this, args)
+          }
+        }
+      }(window.console))
+
+      window.console = { ...window.console, ...console }
+
+      console.system("Running fiddle")
+    }
+
+    if (window.parent){
+      customConsole(window)
+    }
+  </script>
+</head>
+
+
+  <body>
+
+    <header class="border-bottom-thick px-2 clearfix">
+  <div class="left sm-width-full py-1 mt-1 mt-lg-0">
+    <a class="align-middle link-primary text-accent" href="/docs/">
+      Syretia.cf
+    </a>
+  </div>
+  <div class="right sm-width-full">
+    <ul class="list-reset mt-lg-1 mb-2 mb-lg-1">
+      
+        <!--
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/about/">
+            About
+          </a>
+        </li>
+        
+      
+        
+        <li class="inline-block">
+          <a class="align-middle link-primary mr-2 mr-lg-0 ml-lg-2" href="/discord/">
+            Discord AppImage Builds
+          </a>
+        </li>
+        -->
+      
+        
+      
+        
+      
+        
+      
+    </ul>
+  </div>
+</header>
+
+
+    <div>
+      <article class="container px-2 mx-auto mb4" itemscope itemtype="http://schema.org/BlogPosting">
+  <h1 class="h0 col-9 sm-width-full py-4 mt-3 inline-block" itemprop="name headline">json_db docs</h1>
+  <div class="col-4 sm-width-full mt-1 border-top-thin ">
+    <h4 class="mb-3 py-2 bold"></h4>
+  </div>
+
+  <div class="prose" itemprop="articleBody">
+    <pre><code id=account></code></pre>
+
+
+    <script type="text/javascript">//<![CDATA[
+
+
+if (!library)
+   var library = {};
+
+library.json = {
+   replacer: function(match, pIndent, pKey, pVal, pEnd) {
+      var key = '<span class=json-key>';
+      var val = '<span class=json-value>';
+      var str = '<span class=json-string>';
+      var r = pIndent || '';
+      if (pKey)
+         r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+      if (pVal)
+         r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+      return r + (pEnd || '');
+      },
+   prettyPrint: function(obj) {
+      var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+      return JSON.stringify(obj, null, 3)
+         .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+         .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+         .replace(jsonLine, library.json.replacer);
+      }
+   };
+
+var account = {"name":"json_db","version":"0.0.1","usage":"json_db argument <argument-specific-options>","descripton":"A simple JSON database.","arguments":[{"name":"set","usage":"set <bin> <id> [path] <json>","description":["Writes JSON 'JSON_DB_DIR/bin/id' and returns what was written.","'path' is optional; used to update existing JSON files. Uses 'jq' syntax."]},{"name":"get","usage":"get <bin> [id] [path]","description":["Retrieves JSON from 'JSON_DB_DIR/bin/id'.","'id' and 'path' are optional. 'path' uses 'jq' syntax."]},{"name":"count","usage":"count <bin>","description":"Count total number of JSON files in 'JSON_BIN_DIR/bin'."},{"name":"list","usage":"list <bin>","description":"List JSON files in 'JSON_BIN_DIR/bin'"},{"name":"delete","usage":"delete <bin> <id>","description":"Deletes JSON file 'JSON_BIN_DIR/bin/id'."},{"name":"drop","usage":"drop <bin> [--force]","description":"Drops 'JSON_BIN_DIR/bin'."},{"name":"help","usage":"help","description":"Displays help"}],"variables":[{"name":"JSON_DB_DIR","description":"Set the directory to store JSON files in."},{"name":"JSON_DB_TOKEN","description":"Set the token to be used for authenticating with read and/or write protected bins."},{"name":"JSON_DB_PRETTY","description":"When set to true, JSON will be pretty printed."}],"authentication":{"description":["To read and/or write protect bins, authentication files can be placed in 'JSON_DB_DIR'.","For all bins, create the file 'JSON_DB_DIR/.default_auth' as shown in the example below.","For individual bins (overrides default), use 'JSON_DB_DIR/.BinNameHere_auth'.","Export the 'JSON_DB_TOKEN' variable with the contents of your non-encrypted token."],"keys":{"hash":"Token for this bin in sha256 encrypted format.","write":"Set to true to enable write protection or false to disable.","read":"Set to true to enable read protection or false to disable."},"example":{"hash":"befeafb844fd6f296ebc9f1e0cb519205c9359b1d69d5298b1e95add129e529b","write":true,"read":true}}};
+$('#account').html(library.json.prettyPrint(account));
+
+
+
+  //]]></script>
+
+  <script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent){
+      window.parent.parent.postMessage(["resultsFrame", {
+        height: document.body.getBoundingClientRect().height,
+        slug: ""
+      }], "*")
+    }
+
+    // always overwrite window.name, in case users try to set it manually
+    window.name = "result"
+  </script>
+
+    <script>
+      let allLines = []
+
+      window.addEventListener("message", (message) => {
+        if (message.data.console){
+          let insert = document.querySelector("#insert")
+          allLines.push(message.data.console.payload)
+          insert.innerHTML = allLines.join(";\r")
+
+          let result = eval.call(null, message.data.console.payload)
+          if (result !== undefined){
+            console.log(result)
+          }
+        }
+      })
+    </script>
+<!--
+<h1 id="usage">Usage</h1>
+
+<p><strong>Dependencies</strong>: curl (used for downloading EasyRP on first run and grabbing list of icons from <a href="https://github.com/simoniz0r/wmctrl-rpc/blob/master/wmctrl-rpc-icons.sh">here</a> on each run), wmctrl (for getting window titles), xprop (for selecting window to track).</p>
+
+<p>Just run <code class="language-plaintext highlighter-rouge">wmctrl-rpc</code>, and it will automatically update your Discord RPC status based on the title of the chosen window.  Run <code class="language-plaintext highlighter-rouge">wmctrl-rpc win</code> to select a new window to track or edit <code class="language-plaintext highlighter-rouge">~/.local/share/wmctrl-rpc/wmctrl-rpc.conf</code> and instert a valid window class manually.  Run <code class="language-plaintext highlighter-rouge">wmctrl-rpc stop</code> to stop <code class="language-plaintext highlighter-rouge">wmctrl-rpc</code>.</p>
+
+<p>On first run, <code class="language-plaintext highlighter-rouge">~/.local/share/wmctrl-rpc</code> will be created, and EasyRP will be downloaded to <code class="language-plaintext highlighter-rouge">~/.local/share/wmctrl-rpc</code>. If the title of the window changes, the window is closed, or a new window is chosen to track, <code class="language-plaintext highlighter-rouge">wmctrl-rpc</code> updates EasyRP’s config file with the new information.</p>
+
+<h1 id="icons">Icons</h1>
+
+<p>If an application you use is not listed in <a href="https://github.com/simoniz0r/wmctrl-rpc/blob/master/wmctrl-rpc-icons.sh">wmctrl-rpc’s icon list</a>, please create <a href="https://github.com/simoniz0r/wmctrl-rpc/issues/new">an issue</a> with a link to the application’s official icon in png format.  As far as I’m aware, Discord RPC has no limit to the amount of icons that can be uploaded, so all requests should be granted as long as the icon is the official icon.</p>
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<h2 id="is-it-not-working-but-youre-not-getting-any-errors-or-anything">Is it not working but you’re not getting any errors or anything?</h2>
+
+<p>Please ensure under Discord Settings -&gt; Game Activity -&gt; “Display currently running game as a status message” is enabled/turned-on.
+If this option isn’t set, you will be very confused as to why it’s not working.</p>
+
+<p><strong><a href="https://github.com/simoniz0r/wmctrl-rpc">View Source</a></strong></p>
+-->
+  </div>
+
+</article>
+
+<div class="container mx-auto px-2 py-2 clearfix">
+  <!-- Use if you want to show previous and next for posts within a category. -->
+
+
+
+<!--
+<div class="col-4 sm-width-full left mr-lg-4 mt-3">
+  <a class="no-underline border-top-thin py-1 block" href="https://d-simons.github.io/index/2019/07/04/mpris-rpc.html">
+    <span class="h5 bold text-accent">Next</span>
+    <p class="bold h3 link-primary mb-1">mpris-rpc</p>
+    <p>A wrapper for EasyRP that tracks MPRIS playing status for Discord RPC. Usage Dependencies: curl (used for downloading EasyRP on...</p>
+  </a>
+</div>
+-->
+
+
+</div>
+
+    </div>
+
+    <div class="border-top-thin clearfix mt-2 mt-lg-4">
+  <div class="container mx-auto px-2">
+    <p class="col-8 sm-width-full left py-2 mb-0">This website is maintained by <a class="text-accent" href="https://github.com/simoniz0r/syretia.cf">Syretia</a></p>
+    <ul class="list-reset right clearfix sm-width-full py-2 mb-2 mb-lg-0">
+      <li class="inline-block">
+        <a class="github-button" href="https://github.com/simoniz0r/syretia.cf" data-icon="octicon-pulse" data-count-href="simoniz0r//stargazers" data-count-api="/repos/simoniz0r/#stargazers_count" data-count-aria-label="# followers on GitHub" aria-label="Follow simoniz0r/ on GitHub">Follow</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+  </body>
+
+</html>
