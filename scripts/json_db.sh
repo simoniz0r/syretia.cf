@@ -178,9 +178,9 @@ json_db_get() {
         for file in "$JSON_DB_DIR/$json_bin"/*; do
             file_name="$(basename "$file")"
             if [[ -z "$json" ]]; then
-                json="$(jq -cn --arg f "$file_name" --slurpfile j "$file" '.[$f] |= $j')"
+                json="$(jq -cn --arg f "$file_name" --argfile j "$file" '.[$f] |= $j')"
             else
-                json="$(echo "$json" | jq -c --arg f "$file_name" --slurpfile j "$file" '.[$f] |= $j')"
+                json="$(echo "$json" | jq -c --arg f "$file_name" --argfile j "$file" '.[$f] |= $j')"
             fi
         done
         if [[ "$print" == "pretty" ]]; then
