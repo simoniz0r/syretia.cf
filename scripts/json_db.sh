@@ -149,8 +149,8 @@ json_db_set() {
     else
         if [[ "$(jq -crn --argjson j "$value" '$j' 2>/dev/null)" != "" && "$value" == [0-9]* ]]; then
             json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
-        elif [[ "$(jq -crn --argjson j "$value" '$j' 2>/dev/null)" != "" ]]; then
-            json_document="$(jq -c --argjson v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
+        elif [[ "$(jq -crn --argfile j <(echo "$value") '$j' 2>/dev/null)" != "" ]]; then
+            json_document="$(jq -c --argfile v <(echo "$value") "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
         else
             json_document="$(jq -c --arg v "$value" "$json_path |= \$v" "$JSON_DB_DIR/$json_bin/$json_id" 2>&1 || true)"
         fi
