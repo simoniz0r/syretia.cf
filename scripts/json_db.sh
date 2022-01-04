@@ -37,8 +37,8 @@ json_db_help() {
     --arg u6 "drop <bin> [--force]" \
     --arg d6 "Drops 'JSON_DB_DIR/bin'." \
     --arg a7 "help" \
-    --arg u7 "help" \
-    --arg d7 "Displays help" \
+    --arg u7 "help [section]" \
+    --arg d7 "Displays help. 'section' is optional and displays help for a specific section." \
     --arg vn1 "JSON_DB_DIR" \
     --arg vd1 "Set the directory to store JSON files in." \
     --arg vn2 "JSON_DB_TOKEN" \
@@ -80,7 +80,7 @@ json_db_help() {
             "read":true
         }
     }
-    }'
+    }' | jq ".$1 // {\"error\":\"Section '$1' not found\".}"
 }
 
 json_db_set() {
@@ -445,7 +445,8 @@ json_db_main() {
         "delete") json_db_delete "$@";;
         "drop") json_db_drop "$@";;
         "version") json_db_version;;
-        *) json_db_help;;
+        "help") json_db_help "$@";;
+        *) json_db_help "$cmd";;
     esac
 }
 
