@@ -80,7 +80,7 @@ json_db_help() {
             "read":true
         }
     }
-    }' | jq ".$1 // {\"error\":\"Section '$1' not found\".}"
+    }' | jq ".$1" | perl -pe 's%^null$%{"error":"Section not found."}%' | jq '.'
 }
 
 json_db_set() {
