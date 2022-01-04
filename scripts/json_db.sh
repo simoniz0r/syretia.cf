@@ -18,24 +18,24 @@ json_db_help() {
     jq -n --arg ver "$VERSION" \
     --arg a1 "set" \
     --arg u1 "set <bin> <id> [path] <json>" \
-    --arg d11 "Writes JSON and returns what was written." \
-    --arg d12 "Optionally, path can also be specified (uses 'jq' syntax)." \
+    --arg d11 "Writes JSON 'JSON_DB_DIR/bin/id' and returns what was written." \
+    --arg d12 "'path' is optional; used to update existing JSON files. Uses 'jq' syntax." \
     --arg a2 "get" \
-    --arg u2 "get <bin> <id> [path]" \
-    --arg d21 "Retrieves JSON by bin and id." \
-    --arg d22 "Optionally, path can also be specified (uses 'jq' syntax)." \
+    --arg u2 "get <bin> [id] [path]" \
+    --arg d21 "Retrieves JSON from 'JSON_DB_DIR/bin/id'." \
+    --arg d22 "'id' and 'path' are optional. 'path' uses 'jq' syntax." \
     --arg a3 "count" \
     --arg u3 "count <bin>" \
-    --arg d3 "Total number of JSON files in the bin." \
+    --arg d3 "Count total number of JSON files in 'JSON_DB_DIR/bin'." \
     --arg a4 "list" \
     --arg u4 "list <bin>" \
-    --arg d4 "List json files in the bin." \
+    --arg d4 "List JSON files in 'JSON_DB_DIR/bin'" \
     --arg a5 "delete" \
     --arg u5 "delete <bin> <id>" \
-    --arg d5 "Deletes a json file by bin and id." \
+    --arg d5 "Deletes JSON file 'JSON_DB_DIR/bin/id'." \
     --arg a6 "drop" \
     --arg u6 "drop <bin> [--force]" \
-    --arg d6 "Drops the bin." \
+    --arg d6 "Drops 'JSON_DB_DIR/bin'." \
     --arg a7 "help" \
     --arg u7 "help" \
     --arg d7 "Displays help" \
