@@ -38,7 +38,7 @@ json_db_help() {
     --arg u7 "help" \
     --arg d7 "Displays help" \
     --arg vn1 "JSON_DB_DIR" \
-    --arg vd1 "Set the directory to JSON files in." \
+    --arg vd1 "Set the directory to store JSON files in." \
     --arg vn2 "JSON_DB_TOKEN" \
     --arg vd2 "Set the token to be used for authenticating with read and/or write protected bins." \
     --arg vn3 "JSON_DB_PRETTY" \
