@@ -11,7 +11,7 @@ gsb() {
 rm -rf /home/webhookd/logs/*
 
 if [[ -z "$url" ]]; then
-    jq -cn '.url|= null | .domain |= null | .redirect |= false | .phish |= false | .source |= null | .info |= null | .error |= "Missing url input"'
+    jq -cn '.domain |= null | .error |= "Missing url input" | .info |= null | .phish |= false | .redirect |= false | .source |= null | .url |= null'
     exit 0
 fi
 
@@ -26,7 +26,8 @@ redirect="$(jq -r --arg d "$domain" 'any(.shorteners[] == $d; .)' /home/webhookd
 if [[ "$redirect" == "true" ]]; then
     domain="$(curl -sIX HEAD "$url" | grep -im1 '^location:' | cut -f3 -d'/')"
     if [[ -z "$domain" ]]; then
-        jq -cn --arg u "$url" '.url |= $u | .domain |= null | .redirect |= true | .phish |= false | .source |= null | .info |= null | .error |= "Failed to follow redirect"'
+        jq -cn --arg u "$url" \
+        '.domain |= null | .error |= "Failed to follow redirect" | .info |= null | .phish |= false | .redirect |= true | .source |= null | .url |= $u'
         exit 0
     fi
 fi
@@ -43,7 +44,7 @@ yachts="$(jq -r --arg d "$domain" 'any(.blacklist[] == $d; .)' /home/webhookd/js
 
 if [[ "$yachts" == "true" ]]; then
     jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "phish.sinking.yachts" | .info |= $i | .error |= null'
+    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phish.sinking.yachts" | .url |= $u'
     exit 0
 fi
 
@@ -60,15 +61,15 @@ rm -rf /home/webhookd/out/.gsb."$timens"
 
 if [[ "$phisherman" == "true" ]]; then
     jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "phisherman.gg" | .raw |= true | .info |= $i | .error |= null'
+    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phisherman.gg" | .url |= $u'
     exit 0
 fi
 
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
     jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "Google Safe Browsing" | .info |= $i | .error |= null'
+    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "Google Safe Browsing" | .url |= $u'
     exit 0
 fi
 
 jq -cn --arg d "$domain" --argjson r "$redirect" --arg u "$url" \
-'.url |= $u | .domain |= $d | .redirect |= $r | .phish |= false | .source |= null | .info |= null | .error |= null'
+'.domain |= $d | .error |= null | .info |= $i | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
