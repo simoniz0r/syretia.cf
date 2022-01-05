@@ -24,7 +24,7 @@ fi
 redirect="$(jq -r --arg d "$domain" 'any(.shorteners[] == $d; .)' /home/webhookd/jsonlite/discord/domains)"
 
 if [[ "$redirect" == "true" ]]; then
-    domain="$(curl -sIX HEAD "$url" | grep -im1 '^location:' | cut -f3 -d'/')"
+    domain="$(curl -sIX HEAD "$url" 2>/dev/null | grep -im1 '^location:' | cut -f3 -d'/')"
     if [[ -z "$domain" ]]; then
         jq -cn --arg u "$url" \
         '.domain |= null | .error |= "Failed to follow redirect" | .info |= null | .phish |= false | .redirect |= true | .source |= null | .url |= $u'
