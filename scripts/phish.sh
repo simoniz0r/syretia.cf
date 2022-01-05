@@ -1,9 +1,5 @@
 #!/bin/bash
 
-antifish() {
-    curl -sLX POST -H 'Content-Type: application/json' -A 'blargbot (https://blargbot.xyz)' 'https://anti-fish.bitflow.dev/check' -d "$afdata" > /home/webhookd/out/.antifish."$timens"
-}
-
 phisherman() {
     curl -sLA 'blargbot https://blargbot.xyz' "https://api.phisherman.gg/v1/domains/$domain" > /home/webhookd/out/.phisherman."$timens"
 }
@@ -14,42 +10,65 @@ gsb() {
 
 rm -rf /home/webhookd/logs/*
 
-if [[ -z "$domain" ]]; then
-    jq -cn '.domain |= null | .phish |= false | .source |= null'
+if [[ -z "$url" ]]; then
+    jq -cn '.url|= null | .domain |= null | .redirect |= false | .phish |= false | .source |= null | .info |= null | .error |= "Missing url input"'
     exit 0
 fi
 
-export timens="$(date +%s%N)"
-export afdata="$(jq -n --arg d "$domain" '.message |= $d')"
+if [[ "$url" == "http"* ]]; then
+    export domain="$(echo "$url" | cut -f3 -d '/' | perl -pe 's%^www\.%%')"
+else
+    export domain="$(echo "$url" | cut -f1 -d '/' | perl -pe 's%^www\.%%')"
+fi
 
-antifish &
+redirect="$(jq -r --arg d "$domain" 'any(.shorteners[] == $d; .)' /home/webhookd/jsonlite/discord/domains)"
+
+if [[ "$redirect" == "true" ]]; then
+    domain="$(curl -sIX HEAD "$url" | grep -im1 '^location:' | cut -f3 -d'/')"
+    if [[ -z "$domain" ]]; then
+        jq -cn --arg u "$url" '.url |= $u | .domain |= null | .redirect |= true | .phish |= false | .source |= null | .info |= null | .error |= "Failed to follow redirect"'
+        exit 0
+    fi
+fi
+
+export timens="$(date +%s%N)"
+
+if [[ "$info" == "true" ]]; then
+    info="$(curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.')"
+else
+    info="null"
+fi
+
+yachts="$(jq -r --arg d "$domain" 'any(.blacklist[] == $d; .)' /home/webhookd/jsonlite/discord/domains)"
+
+if [[ "$yachts" == "true" ]]; then
+    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "phish.sinking.yachts" | .info |= $i | .error |= null'
+    exit 0
+fi
+
 phisherman &
 gsb &
 
 wait
 
-antifish="$(cat /home/webhookd/out/.antifish."$timens")"
 phisherman="$(cat /home/webhookd/out/.phisherman."$timens")"
 gsb="$(cat /home/webhookd/out/.gsb."$timens")"
 
-rm -rf /home/webhookd/out/.antifish."$timens"
 rm -rf /home/webhookd/out/.phisherman."$timens"
 rm -rf /home/webhookd/out/.gsb."$timens"
 
-if [[ "$(echo "$antifish" | jq -r '.match')" == "true" ]]; then
-    source="anti-fish.bitflow.dev ($(echo "$antifish" | jq -r '.matches[0].source'))"
-    jq -cn --arg d "$domain" --arg s "$source" --argjson r "$antifish" '.domain |= $d | .phish |= true | .source |= $s | .raw |= $r'
-    exit 0
-fi
-
 if [[ "$phisherman" == "true" ]]; then
-    jq -cn --arg d "$domain" '.domain |= $d | .phish |= true | .source |= "phisherman.gg" | .raw |= true'
+    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "phisherman.gg" | .raw |= true | .info |= $i | .error |= null'
     exit 0
 fi
 
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
-    jq -cn --arg d "$domain" --argjson r "$gsb" '.domain |= $d | .phish |= true | .source |= "Google Safe Browsing" | .raw |= $r'
+    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    '.url |= $u | .domain |= $d | .redirect |= $r | .phish |= true | .source |= "Google Safe Browsing" | .info |= $i | .error |= null'
     exit 0
 fi
 
-jq -cn --arg d "$domain" '.domain |= $d | .phish |= false | .source |= null'
+jq -cn --arg d "$domain" --argjson r "$redirect" --arg u "$url" \
+'.url |= $u | .domain |= $d | .redirect |= $r | .phish |= false | .source |= null | .info |= null | .error |= null'
