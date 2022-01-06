@@ -73,7 +73,7 @@
           ],
           "responses": {
             "200": {
-              "description": "​ ​",
+              "description": "HTTP/2 200",
               "schema": {
                 "type":"string",
                 "example":"HTTP/2 200"
