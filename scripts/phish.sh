@@ -21,7 +21,7 @@ else
     export domain="$(echo "$url" | cut -f1 -d '/' | perl -pe 's%^www\.%%')"
 fi
 
-redirect="$(jq -r --arg d "$domain" 'any(.shorteners[] == $d; .)' /home/webhookd/jsonlite/discord/domains)"
+redirect="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/shorteners)"
 
 if [[ "$redirect" == "true" ]]; then
     domain="$(curl -sIX HEAD "$url" 2>/dev/null | grep -im1 '^location:' | cut -f3 -d'/')"
@@ -40,7 +40,7 @@ else
     info="null"
 fi
 
-yachts="$(jq -r --arg d "$domain" 'any(.blacklist[] == $d; .)' /home/webhookd/jsonlite/discord/domains)"
+yachts="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/blacklist)"
 
 if [[ "$yachts" == "true" ]]; then
     jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
