@@ -34,11 +34,10 @@ fi
 
 export timens="$(date +%s%N)"
 
-# if [[ "$info" == "true" ]]; then
-#     info="$(curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.')"
-# else
-#     info="null"
-# fi
+if [[ "$info" == "true" ]]; then
+    curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.'
+    exit 0
+fi
 
 yachts="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/blacklist)"
 
