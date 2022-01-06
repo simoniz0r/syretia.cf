@@ -19,7 +19,7 @@
           "summary": "phish",
           "description": "Uses phish.sinking.yachts, phisherman.gg, and Google Safe Browsing to check if the 'url' input is a phishing URL.",
           "operationId": "phish",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/phish?url=https%3A%2F%2Fbit.ly%2F3GMGKzLm&info=false'"}],
+          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/phish?url=https%3A%2F%2Ftestsafebrowsing.com&info=false'"}],
           "produces": [
             "application/json"
           ],
