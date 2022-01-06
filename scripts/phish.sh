@@ -71,5 +71,5 @@ if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
     exit 0
 fi
 
-jq -cn --arg d "$domain" --argjson r "$redirect" --arg u "$url" \
-'.domain |= $d | .error |= null | .info |= null | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
+jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+'.domain |= $d | .error |= null | .info |= $i | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
