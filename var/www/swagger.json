@@ -19,7 +19,7 @@
           "summary": "phish",
           "description": "Uses phish.sinking.yachts, phisherman.gg, and Google Safe Browsing to check if the 'url' input is a phishing URL.",
           "operationId": "phish",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/phish?url=https%3A%2F%2Ftestsafebrowsing.com&info=false'"}],
+          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/phish?url=https%3A%2F%2Ftestsafebrowsing.appspot.com&info=false'"}],
           "produces": [
             "application/json"
           ],
@@ -44,7 +44,39 @@
             "200": {
               "description": "​ ​",
               "schema": {
-                "$ref": "#/definitions/inline_response_200"
+                "$ref": "#/definitions/phish_response_200"
+              }
+            }
+          }
+        }
+      },
+      "/status": {
+        "post": {
+          "tags": [
+            "POST"
+          ],
+          "summary": "status",
+          "description": "Returns the HTTP status for a given 'url'",
+          "operationId": "status",
+          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Fgithub.com'"}],
+          "produces": [
+            "plain/text"
+          ],
+          "parameters": [
+            {
+              "name": "url",
+              "in": "query",
+              "description": "URI encoded URL to get HTTP status for",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "​ ​",
+              "schema": {
+                "type":"string",
+                "example":"https%3A%2F%2Fgithub.com"
               }
             }
           }
@@ -52,7 +84,7 @@
       }
     },
     "definitions": {
-      "inline_response_200": {
+      "phish_response_200": {
         "type": "object",
         "properties": {
           "domain": {
