@@ -11,7 +11,7 @@ gsb() {
 rm -rf /home/webhookd/logs/*
 
 if [[ -z "$url" ]]; then
-    jq -cn '.domain |= null | .error |= "Missing url input" | .info |= null | .phish |= false | .redirect |= false | .source |= null | .url |= null'
+    jq -cn '.domain |= null | .error |= "Missing url input" | .phish |= false | .redirect |= false | .source |= null | .url |= null'
     exit 0
 fi
 
@@ -27,7 +27,7 @@ if [[ "$redirect" == "true" ]]; then
     domain="$(curl -sIX HEAD "$url" 2>/dev/null | grep -im1 '^location:' | cut -f3 -d'/')"
     if [[ -z "$domain" ]]; then
         jq -cn --arg u "$url" \
-        '.domain |= null | .error |= "Failed to follow redirect" | .info |= null | .phish |= false | .redirect |= true | .source |= null | .url |= $u'
+        '.domain |= null | .error |= "Failed to follow redirect" | .phish |= false | .redirect |= true | .source |= null | .url |= $u'
         exit 0
     fi
 fi
