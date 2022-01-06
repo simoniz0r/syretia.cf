@@ -726,8 +726,8 @@ margin-bottom: 20px;
         </div>
         <div id="header">
           <div id="api-_">
-            <h2 id="welcome-to-apidoc">API and SDK Documentation</h2>
-              <div class="app-desc">Version: 0.0.1</div>
+            <h2 id="welcome-to-apidoc">API Documentation</h2>
+              <div class="app-desc">Version: 2022.01.06</div>
             <hr>
             <div>Syretia's API for things and such</div>
           </div>
@@ -751,205 +751,13 @@ margin-bottom: 20px;
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
-                        <ul class="nav nav-tabs nav-tabs-examples">
-                          <li class="active"><a href="#examples-POST-phish-0-curl">Curl</a></li>
-                        </ul>
-
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-POST-phish-0-curl">
                             <pre class="prettyprint"><code class="language-bsh">curl -X POST "https://syretia.cf/phish?url=&info="</code></pre>
                           </div>
-                          <div class="tab-pane" id="examples-POST-phish-0-java">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
-import io.swagger.client.auth.*;
-import io.swagger.client.model.*;
-import io.swagger.client.api.POSTApi;
-
-import java.io.File;
-import java.util.*;
-
-public class POSTApiExample {
-
-    public static void main(String[] args) {
-        
-        POSTApi apiInstance = new POSTApi();
-        String url = url_example; // String | URI encoded URL to scan
-        Boolean info = true; // Boolean | Grab info about a domain from uriscan.io and exit without running checks
-        try {
-            Object result = apiInstance.phish(url, info);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling POSTApi#phish");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-
-                          <div class="tab-pane" id="examples-POST-phish-0-android">
-                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.POSTApi;
-
-public class POSTApiExample {
-
-    public static void main(String[] args) {
-        POSTApi apiInstance = new POSTApi();
-        String url = url_example; // String | URI encoded URL to scan
-        Boolean info = true; // Boolean | Grab info about a domain from uriscan.io and exit without running checks
-        try {
-            Object result = apiInstance.phish(url, info);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling POSTApi#phish");
-            e.printStackTrace();
-        }
-    }
-}</code></pre>
-                          </div>
-  <!--
-  <div class="tab-pane" id="examples-POST-phish-0-groovy">
-  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-  </div> -->
-                            <div class="tab-pane" id="examples-POST-phish-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">String *url = url_example; // URI encoded URL to scan
-Boolean *info = true; // Grab info about a domain from uriscan.io and exit without running checks (optional) (default to false)
-
-POSTApi *apiInstance = [[POSTApi alloc] init];
-
-// Checks for phishing URLs
-[apiInstance phishWith:url
-    info:info
-              completionHandler: ^(Object output, NSError* error) {
-                            if (output) {
-                                NSLog(@"%@", output);
-                            }
-                            if (error) {
-                                NSLog(@"Error: %@", error);
-                            }
-                        }];
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-POST-phish-0-javascript">
-                              <pre class="prettyprint"><code class="language-js">var Syretiacf = require('syretiacf');
-
-var api = new Syretiacf.POSTApi()
-
-var url = url_example; // {String} URI encoded URL to scan
-
-var opts = { 
-  'info': true // {Boolean} Grab info about a domain from uriscan.io and exit without running checks
-};
-
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-};
-api.phish(url, opts, callback);
-</code></pre>
-                            </div>
-
-                            <!--<div class="tab-pane" id="examples-POST-phish-0-angular">
-              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
-            </div>-->
-                            <div class="tab-pane" id="examples-POST-phish-0-csharp">
-                              <pre class="prettyprint"><code class="language-cs">using System;
-using System.Diagnostics;
-using IO.Swagger.Api;
-using IO.Swagger.Client;
-using IO.Swagger.Model;
-
-namespace Example
-{
-    public class phishExample
-    {
-        public void main()
-        {
-            
-            var apiInstance = new POSTApi();
-            var url = url_example;  // String | URI encoded URL to scan
-            var info = true;  // Boolean | Grab info about a domain from uriscan.io and exit without running checks (optional)  (default to false)
-
-            try
-            {
-                // Checks for phishing URLs
-                Object result = apiInstance.phish(url, info);
-                Debug.WriteLine(result);
-            }
-            catch (Exception e)
-            {
-                Debug.Print("Exception when calling POSTApi.phish: " + e.Message );
-            }
-        }
-    }
-}
-</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-POST-phish-0-php">
-                              <pre class="prettyprint"><code class="language-php"><&#63;php
-require_once(__DIR__ . '/vendor/autoload.php');
-
-$api_instance = new Swagger\Client\Api\POSTApi();
-$url = url_example; // String | URI encoded URL to scan
-$info = true; // Boolean | Grab info about a domain from uriscan.io and exit without running checks
-
-try {
-    $result = $api_instance->phish($url, $info);
-    print_r($result);
-} catch (Exception $e) {
-    echo 'Exception when calling POSTApi->phish: ', $e->getMessage(), PHP_EOL;
-}
-?></code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-POST-phish-0-perl">
-                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
-use WWW::SwaggerClient::Configuration;
-use WWW::SwaggerClient::POSTApi;
-
-my $api_instance = WWW::SwaggerClient::POSTApi->new();
-my $url = url_example; # String | URI encoded URL to scan
-my $info = true; # Boolean | Grab info about a domain from uriscan.io and exit without running checks
-
-eval { 
-    my $result = $api_instance->phish(url => $url, info => $info);
-    print Dumper($result);
-};
-if ($@) {
-    warn "Exception when calling POSTApi->phish: $@\n";
-}</code></pre>
-                            </div>
-
-                            <div class="tab-pane" id="examples-POST-phish-0-python">
-                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# create an instance of the API class
-api_instance = swagger_client.POSTApi()
-url = url_example # String | URI encoded URL to scan
-info = true # Boolean | Grab info about a domain from uriscan.io and exit without running checks (optional) (default to false)
-
-try: 
-    # Checks for phishing URLs
-    api_response = api_instance.phish(url, info=info)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling POSTApi->phish: %s\n" % e)</code></pre>
-                            </div>
-                          </div>
+                        </div>
 
                           <h2>Parameters</h2>
-
-
-
-
-
                             <div class="methodsubtabletitle">Query parameters</div>
                             <table id="methodsubtable">
                               <tr>
