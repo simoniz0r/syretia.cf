@@ -76,7 +76,7 @@
               "description": "​ ​",
               "schema": {
                 "type":"string",
-                "example":"https%3A%2F%2Fgithub.com"
+                "example":"HTTP/2 200"
               }
             }
           }
