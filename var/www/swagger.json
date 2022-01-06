@@ -60,7 +60,7 @@
           "operationId": "status",
           "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Fgithub.com'"}],
           "produces": [
-            "plain/text"
+            "text/plain"
           ],
           "parameters": [
             {
