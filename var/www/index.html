@@ -7247,7 +7247,7 @@
                 <div class="tab-content">
                   <div class="tab-pane active" id="examples-POST-phish-0-curl">
                     <pre
-                      class="prettyprint"><code class="language-bsh">curl -X POST "https://syretia.cf/phish?url=&info="</code></pre>
+                      class="prettyprint"><code class="language-bsh">curl -sX POST "https://syretia.cf/phish?url=https://testsafebrowsing.appspot.com&info=false"</code></pre>
                   </div>
                 </div>
 
@@ -7305,15 +7305,7 @@
 
                 </table>
 
-                <h2>Responses</h2>
-                <h3> Status: 200 - ​ ​ </h3>
-
-                <ul class="nav nav-tabs nav-tabs-examples">
-                  <li class="active">
-                    <a data-toggle="tab" href="#responses-phish-200-schema">Schema</a>
-                  </li>
-
-                </ul>
+                <h2>Response</h2>
 
                 <div class="tab-content" style='margin-bottom: 10px;'>
                   <div class="tab-pane active" id="responses-phish-200-schema">
@@ -7326,30 +7318,12 @@
                             "schema": {
                               "type": "object",
                               "properties": {
-                                "domain": {
-                                  "type": "string",
-                                  "example": "testsafebrowsing.appspot.com"
-                                },
-                                "error": {
-                                  "type": "string",
-                                  "example": null
-                                },
-                                "phish": {
-                                  "type": "boolean",
-                                  "example": true
-                                },
-                                "redirect": {
-                                  "type": "boolean",
-                                  "example": false
-                                },
-                                "source": {
-                                  "type": "string",
-                                  "example": "Google Safe Browsing"
-                                },
-                                "url": {
-                                  "type": "string",
-                                  "example": "https://testsafebrowsing.com"
-                                }
+                                "domain": "testsafebrowsing.appspot.com",
+                                "error": null,
+                                "phish": true,
+                                "redirect": false,
+                                "source": "Google Safe Browsing",
+                                "url": "https://testsafebrowsing.com"
                               }
                             }
                           };
