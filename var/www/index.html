@@ -7318,12 +7318,30 @@
                             "schema": {
                               "type": "object",
                               "properties": {
-                                "domain": "testsafebrowsing.appspot.com",
-                                "error": null,
-                                "phish": true,
-                                "redirect": false,
-                                "source": "Google Safe Browsing",
-                                "url": "https://testsafebrowsing.com"
+                                "domain": {
+                                  "type": "string",
+                                  "example": "testsafebrowsing.appspot.com"
+                                },
+                                "error": {
+                                  "type": "string",
+                                  "example": null
+                                },
+                                "phish": {
+                                  "type": "boolean",
+                                  "example": true
+                                },
+                                "redirect": {
+                                  "type": "boolean",
+                                  "example": false
+                                },
+                                "source": {
+                                  "type": "string",
+                                  "example": "Google Safe Browsing"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "example": "https://testsafebrowsing.com"
+                                }
                               }
                             }
                           };
