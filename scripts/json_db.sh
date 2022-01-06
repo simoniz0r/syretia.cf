@@ -166,7 +166,11 @@ json_db_set() {
 
     echo "$json_document" > "$JSON_DB_DIR/$json_bin/$json_id"
     if [[ -z "$json_path" ]]; then
-        cat "$JSON_DB_DIR/$json_bin/$json_id"
+        if [[ "$JSON_DB_PRETTY" == "true" ]]; then
+            jq '.' "$JSON_DB_DIR/$json_bin/$json_id"
+        else
+            cat "$JSON_DB_DIR/$json_bin/$json_id"
+        fi
     else
         if [[ "$JSON_DB_PRETTY" == "true" ]]; then
             jq -r "$json_path" "$JSON_DB_DIR/$json_bin/$json_id"
