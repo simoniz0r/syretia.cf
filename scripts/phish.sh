@@ -34,17 +34,18 @@ fi
 
 export timens="$(date +%s%N)"
 
-if [[ "$info" == "true" ]]; then
-    info="$(curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.')"
-else
-    info="null"
-fi
+# if [[ "$info" == "true" ]]; then
+#     info="$(curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.')"
+# else
+#     info="null"
+# fi
 
 yachts="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/blacklist)"
 
 if [[ "$yachts" == "true" ]]; then
-    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phish.sinking.yachts" | .url |= $u'
+    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"phish.sinking.yachts\",\"url\":\"$url\"}"
+    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phish.sinking.yachts" | .url |= $u'
     exit 0
 fi
 
@@ -60,16 +61,19 @@ rm -rf /home/webhookd/out/.phisherman."$timens"
 rm -rf /home/webhookd/out/.gsb."$timens"
 
 if [[ "$phisherman" == "true" ]]; then
-    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phisherman.gg" | .url |= $u'
+    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"phisherman.gg\",\"url\":\"$url\"}"
+    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phisherman.gg" | .url |= $u'
     exit 0
 fi
 
 if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
-    jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "Google Safe Browsing" | .url |= $u'
+    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"Google Safe Browsing\",\"url\":\"$url\"}"
+    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "Google Safe Browsing" | .url |= $u'
     exit 0
 fi
 
-jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-'.domain |= $d | .error |= null | .info |= $i | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
+echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":false,\"redirect\":$redirect,\"source\":null,\"url\":\"$url\"}"
+# jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
+# '.domain |= $d | .error |= null | .info |= $i | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
