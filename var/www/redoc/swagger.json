@@ -1,0 +1,83 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "Syretia's API for things and such",
+      "version": "2022.01.06",
+      "title": "Syretia.cf",
+      "license": {
+        "name": "MIT",
+        "url": "https://www.mit.edu/~amini/LICENSE.md"
+      }
+    },
+    "host": "syretia.cf",
+    "paths": {
+      "/phish": {
+        "post": {
+          "tags": [
+            "POST"
+          ],
+          "summary": "Checks for phishing URLs",
+          "description": "Uses phish.sinking.yachts, phisherman.gg, and Google Safe Browsing to check if the 'url' input is a phishing URL.",
+          "operationId": "phish",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "url",
+              "in": "query",
+              "description": "URI encoded URL to scan",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "info",
+              "in": "query",
+              "description": "Grab info about a domain from uriscan.io and exit without running checks",
+              "required": false,
+              "type": "boolean",
+              "default": false
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "​ ​",
+              "schema": {
+                "$ref": "#/definitions/inline_response_200"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "example": "testsafebrowsing.appspot.com"
+          },
+          "error": {
+            "type": "string"
+          },
+          "phish": {
+            "type": "boolean",
+            "example": true
+          },
+          "redirect": {
+            "type": "boolean",
+            "example": false
+          },
+          "source": {
+            "type": "string",
+            "example": "Google Safe Browsing"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://testsafebrowsing.com"
+          }
+        }
+      }
+    }
+  }
