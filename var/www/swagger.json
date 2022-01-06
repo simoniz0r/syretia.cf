@@ -16,7 +16,7 @@
           "tags": [
             "POST"
           ],
-          "summary": "Checks for phishing URLs",
+          "summary": "phish",
           "description": "Uses phish.sinking.yachts, phisherman.gg, and Google Safe Browsing to check if the 'url' input is a phishing URL.",
           "operationId": "phish",
           "produces": [
