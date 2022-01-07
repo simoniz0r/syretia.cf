@@ -2,4 +2,4 @@
 
 rm -rf /home/webhookd/logs/*
 
-printf "%s\n" "$@" | pandoc -f "$f" -t "$t" --wrap=none
+printf "%s\n" "$@" | base64 -d - | pandoc -f "$f" -t "$t" --wrap=none
