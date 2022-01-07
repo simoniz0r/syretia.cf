@@ -118,7 +118,7 @@
             {
               "name": "url",
               "in": "query",
-              "description": "URI encoded URL an XML document",
+              "description": "URI encoded URL to an XML document",
               "required": true,
               "type": "string"
             }
