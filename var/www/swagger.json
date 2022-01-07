@@ -51,6 +51,16 @@
           "responses": {
             "200": {
               "description": "​ ​",
+              "examples": {
+                "application/json": {
+                  "domain": "testsafebrowsing.appspot.com",
+                  "error": null,
+                  "phish": true,
+                  "redirect": false,
+                  "source": "Google Safe Browsing",
+                  "url": "https://testsafebrowsing.appspot.com"
+                }
+              },
               "schema": {
                 "$ref": "#/definitions/phish_response_200"
               }
@@ -159,7 +169,7 @@
           },
           "url": {
             "type": "string",
-            "example": "https://testsafebrowsing.com"
+            "example": "https://testsafebrowsing.appspot.com"
           }
         }
       }
