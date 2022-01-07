@@ -4,6 +4,10 @@
       "description": "Syretia's API for things and such.\nAll endpoints have a 10 second timeout limit. 'GET' requests can also be used, but the data will be returned in Server-sent events format.  'POST' returns chunked data.",
       "version": "2022.01.06",
       "title": "Syretia.cf",
+      "x-logo": {
+        "url": "https://sy.imgix.net/iRWfZH_syretiacf.png",
+        "backgroundColor": "#010109"
+      },
       "contact": {
         "name": "Syretia",
         "url": "https://syretia.cf"
