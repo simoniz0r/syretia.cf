@@ -52,6 +52,7 @@
             "200": {
               "description": "​ ​",
               "examples": {
+                "text/plain (request timed out)": "error: signal: killed",
                 "application/json": {
                   "domain": "testsafebrowsing.appspot.com",
                   "error": null,
@@ -93,7 +94,8 @@
             "200": {
               "description": "​ ​",
               "examples": {
-                "text/plain": "HTTP/2 200"
+                "text/plain": "HTTP/2 200",
+                "text/plain (request timed out)": "error: signal: killed"
               },
               "schema": {
                 "type": "text/plain"
@@ -127,6 +129,7 @@
             "200": {
               "description": "​ ​",
               "examples": {
+                "text/plain (request timed out)": "error: signal: killed",
                 "application/json": {
                   "note": {
                     "to": "Tove",
