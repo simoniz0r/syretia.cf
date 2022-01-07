@@ -4,6 +4,10 @@
       "description": "Syretia's API for things and such",
       "version": "2022.01.06",
       "title": "Syretia.cf",
+      "contact": {
+        "name": "Syretia",
+        "url": "https://github.com/simoniz0r/syretia.cf"
+      },
       "license": {
         "name": "MIT",
         "url": "https://www.mit.edu/~amini/LICENSE.md"
