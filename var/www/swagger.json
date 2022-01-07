@@ -110,7 +110,7 @@
           "summary": "xml2json",
           "description": "Converts a 'url' containing an XML document to JSON",
           "operationId": "xml2json",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"}],
+          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/xml2json?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"}],
           "produces": [
             "application/json"
           ],
