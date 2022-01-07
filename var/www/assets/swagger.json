@@ -4,11 +4,6 @@
       "description": "Syretia's API for things and such. All endpoints have a 10 second timeout limit. 'GET' requests can also be used, but the data will be returned in [Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) format.  'POST' returns chunked data.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.",
       "version": "2022.01.06",
       "title": "Syretia.cf",
-      "x-logo": {
-        "backgroundColor": "#010109",
-        "href": "https://syretia.cf/docs",
-        "url": "https://sy.imgix.net/iRWfZH_syretiacf.png"
-      },
       "contact": {
         "name": "Syretia",
         "url": "https://syretia.cf"
