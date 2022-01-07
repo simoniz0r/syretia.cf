@@ -5,8 +5,9 @@
       "version": "2022.01.06",
       "title": "Syretia.cf",
       "x-logo": {
-        "url": "https://sy.imgix.net/iRWfZH_syretiacf.png",
-        "backgroundColor": "#010109"
+        "backgroundColor": "#010109",
+        "href": "https://syretia.cf/docs",
+        "url": "https://sy.imgix.net/iRWfZH_syretiacf.png"
       },
       "contact": {
         "name": "Syretia",
