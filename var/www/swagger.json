@@ -6,12 +6,16 @@
       "title": "Syretia.cf",
       "contact": {
         "name": "Syretia",
-        "url": "https://github.com/simoniz0r/syretia.cf"
+        "url": "https://syretia.cf"
       },
       "license": {
         "name": "MIT",
         "url": "https://www.mit.edu/~amini/LICENSE.md"
       }
+    },
+    "externalDocs": {
+      "description": "GitHub",
+      "url": "https://github.com/simoniz0r/syretia.cf"
     },
     "host": "syretia.cf",
     "paths": {
