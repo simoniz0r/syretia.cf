@@ -74,8 +74,11 @@
           "responses": {
             "200": {
               "description": "​ ​",
+              "examples": {
+                "text/plain": "HTTP/2 200"
+              },
               "schema": {
-                "$ref": "#/definitions/status_response_200"
+                "type": "text/plain"
               }
             }
           }
@@ -110,10 +113,6 @@
             "example": "https://testsafebrowsing.com"
           }
         }
-      },
-      "status_response_200": {
-        "type": "string",
-        "example": "HTTP/2 200"
       }
     }
   }
