@@ -102,7 +102,7 @@
           "operationId": "xml2json",
           "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"}],
           "produces": [
-            "text/plain"
+            "application/json"
           ],
           "parameters": [
             {
