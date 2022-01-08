@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
       "description": "Syretia's API for things and such. All endpoints have a 10 second timeout limit. 'GET' requests can also be used, but the data will be returned in [Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) format.  'POST' returns chunked data.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.",
-      "version": "2022.01.06",
+      "version": "2022.01.08",
       "title": "Syretia.cf",
       "contact": {
         "name": "Syretia",
