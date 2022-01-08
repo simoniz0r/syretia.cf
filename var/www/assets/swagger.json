@@ -75,17 +75,17 @@
             "POST"
           ],
           "summary": "status",
-          "description": "Returns the HTTP status for a given 'url'",
+          "description": "Returns connection info for a given 'url'",
           "operationId": "status",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Fgithub.com'"}],
+          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.cf/status?url=https%3A%2F%2Flists.opensuse.org%2Farchives%2F'"}],
           "produces": [
-            "text/plain"
+            "application/json"
           ],
           "parameters": [
             {
               "name": "url",
               "in": "query",
-              "description": "URI encoded URL to get HTTP status for",
+              "description": "URI encoded URL to get info for",
               "required": true,
               "type": "string"
             }
@@ -94,11 +94,52 @@
             "200": {
               "description": "​ ​",
               "examples": {
-                "text/plain": "HTTP/2 200",
-                "text/plain (request timed out)": "error: signal: killed"
+                "text/plain (request timed out)": "error: signal: killed",
+                "application/json": {
+                  "content_type": "text/html; charset=utf-8",
+                  "curl_version": "libcurl/7.80.0 OpenSSL/1.1.1l zlib/1.2.11 libssh2/1.9.0 nghttp2/1.43.0",
+                  "errormsg": null,
+                  "exitcode": 0,
+                  "filename_effective": null,
+                  "ftp_entry_path": null,
+                  "headers": "HTTP/2 200 \r\ndate: Sat, 08 Jan 2022 05:38:24 GMT\r\ncontent-type: text/html; charset=utf-8\r\ncontent-length: 50804\r\nvary: Accept-Language, Cookie\r\ncontent-language: en\r\nx-frame-options: SAMEORIGIN\r\nx-xss-protection: 1; mode=block\r\nx-content-type-options: nosniff\r\nreferrer-policy: no-referrer-when-downgrade\r\nstrict-transport-security: max-age=15768000\r\n\r",
+                  "http_code": 200,
+                  "http_connect": 0,
+                  "http_version": "2",
+                  "local_ip": null,
+                  "local_port": 55232,
+                  "method": "HEAD",
+                  "num_connects": 1,
+                  "num_headers": 10,
+                  "num_redirects": 0,
+                  "proxy_ssl_verify_result": 0,
+                  "redirect_url": null,
+                  "referer": null,
+                  "remote_ip": "195.135.221.140",
+                  "remote_port": 443,
+                  "response_code": 200,
+                  "scheme": "HTTPS",
+                  "size_download": 0,
+                  "size_header": 353,
+                  "size_request": 89,
+                  "size_upload": 0,
+                  "speed_download": 0,
+                  "speed_upload": 0,
+                  "ssl_verify_result": 0,
+                  "time_appconnect": 0.238881,
+                  "time_connect": 0.114847,
+                  "time_namelookup": 0.012021,
+                  "time_pretransfer": 0.239143,
+                  "time_redirect": 0,
+                  "time_starttransfer": 0.581998,
+                  "time_total": 0.5821,
+                  "url": "https://lists.opensuse.org/archives/",
+                  "url_effective": "https://lists.opensuse.org/archives/",
+                  "urlnum": 0
+                }
               },
               "schema": {
-                "type": "text/plain"
+                "type": "application/json"
               }
             }
           }
