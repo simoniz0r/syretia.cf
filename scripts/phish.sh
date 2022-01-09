@@ -1,78 +1,118 @@
-#!/bin/bash
+#!/usr/bin/tclsh
 
-phisherman() {
-    curl -sLA 'blargbot https://blargbot.xyz' "https://api.phisherman.gg/v1/domains/$domain" > /home/webhookd/out/.phisherman."$timens"
+package require rl_json
+package require TclCurl
+
+namespace import rl_json::json
+
+set phish false
+
+set redirect false
+
+if { [ info exists env(url) ] == 0 } {
+	set error [ list string "No 'url' provided" ]
+	puts [ json object \
+	domain null \
+	error $error\
+	phish { boolean false } \
+	redirect { boolean false } \
+	source null \
+	url null ]
+	exit 0
 }
 
-gsb() {
-    curl -sL "https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain" | tail -n 1 > /home/webhookd/out/.gsb."$timens"
+set input $env(url)
+
+if { [ string match "http*" $input ] } {
+	set domain [ regsub "^www\." [ lindex [ split $input "/" ] 2 ] "" ]
+} else {
+	set domain [ regsub "^www\." $input "" ]
 }
 
-rm -rf /home/webhookd/logs/*
+set sFileID [ open {/home/webhookd/jsonlite/domains/shorteners} ]
 
-if [[ -z "$url" ]]; then
-    jq -cn '.domain |= null | .error |= "Missing url input" | .phish |= false | .redirect |= false | .source |= null | .url |= null'
-    exit 0
-fi
+set sjs [ read $sFileID ]
 
-if [[ "$url" == "http"* ]]; then
-    export domain="$(echo "$url" | cut -f3 -d '/' | perl -pe 's%^www\.%%')"
-else
-    export domain="$(echo "$url" | cut -f1 -d '/' | perl -pe 's%^www\.%%')"
-fi
+set shorteners [ json get $sjs ]
 
-redirect="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/shorteners)"
+foreach s $shorteners {
+	if { $s == $domain } {
+		set redirect true
+		break
+	}
+}
 
-if [[ "$redirect" == "true" ]]; then
-    domain="$(curl -sIX HEAD "$url" 2>/dev/null | grep -im1 '^location:' | cut -f3 -d'/')"
-    if [[ -z "$domain" ]]; then
-        jq -cn --arg u "$url" \
-        '.domain |= null | .error |= "Failed to follow redirect" | .phish |= false | .redirect |= true | .source |= null | .url |= $u'
-        exit 0
-    fi
-fi
+if { $redirect == true } {
+	curl::transfer -nobody 1 -url $input -headervar reheaders
+	set reurl [ lindex [ array get reheaders location ] 1 ]
+	set domain [ regsub "^www\." [ lindex [ split $reurl "/" ] 2 ] "" ]
+	if { $domain == "" } {
+		set error [ list string "Failed to fetch redirect for '$input'" ]
+		set lredirect [ list boolean $redirect ]
+		set url [ list string $input ]
+		puts [ json object \
+		domain null \
+		error $error \
+		phish [ list boolean false ] \
+		redirect $lredirect \
+		source null \
+		url $url ]
+		exit 0
+	}
+}
 
-export timens="$(date +%s%N)"
+set bFileID [ open {/home/webhookd/jsonlite/domains/blacklist} ]
 
-if [[ "$info" == "true" ]]; then
-    curl -sL "https://urlscan.io/api/verdict/$domain" | jq -c '.'
-    exit 0
-fi
+set bjs [ read $bFileID ]
 
-yachts="$(jq -r --arg d "$domain" 'any(.[] == $d; .)' /home/webhookd/jsonlite/domains/blacklist)"
+set blacklist [ json get $bjs ]
 
-if [[ "$yachts" == "true" ]]; then
-    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"phish.sinking.yachts\",\"url\":\"$url\"}"
-    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phish.sinking.yachts" | .url |= $u'
-    exit 0
-fi
+foreach d $blacklist {
+	if { $d == $domain } {
+		set phish true
+		set ldomain [ list string $domain ]
+		set lredirect [ list boolean $redirect ]
+		set url [ list string $input ]
+		puts [ json object \
+		domain $ldomain \
+		error null \
+		phish { boolean true } \
+		redirect $lredirect \
+		source { string "phish.sinking.yachts" } \
+		url $url ]
+		break
+	}
+}
 
-phisherman &
-gsb &
+if { $phish == false } {
+	curl::transfer -followlocation 1 -url https://transparencyreport.google.com/transparencyreport/api/v3/safebrowsing/status?site=$domain -bodyvar gsbraw
+	set gsb [ json get [ lindex [ split $gsbraw "\n" ] 2 ] 0  4 ]
+	if { $gsb == 1 } {
+		set phish true
+		set ldomain [ list string $domain ]
+		set lredirect [ list boolean $redirect ]
+		set url [ list string $input ]
+		puts [ json object \
+		domain $ldomain \
+		error null \
+		phish { boolean true } \
+		redirect $lredirect \
+		source { string "Google Safe Browsing" } \
+		url $url ]
+	}
+}
 
-wait
+if { $phish == false } {
+	set ldomain [ list string $domain ]
+	set lredirect [ list boolean $redirect ]
+	set url [ list string $input ]
+	puts [ json object \
+	domain $ldomain \
+	error null \
+	phish { boolean false } \
+	redirect $lredirect \
+	source null \
+	url $url ]
+}
 
-phisherman="$(cat /home/webhookd/out/.phisherman."$timens")"
-gsb="$(cat /home/webhookd/out/.gsb."$timens")"
-
-rm -rf /home/webhookd/out/.phisherman."$timens"
-rm -rf /home/webhookd/out/.gsb."$timens"
-
-if [[ "$phisherman" == "true" ]]; then
-    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"phisherman.gg\",\"url\":\"$url\"}"
-    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "phisherman.gg" | .url |= $u'
-    exit 0
-fi
-
-if [[ "$(echo "$gsb" | jq '.[0][4]')" == "1" ]]; then
-    echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":true,\"redirect\":$redirect,\"source\":\"Google Safe Browsing\",\"url\":\"$url\"}"
-    # jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-    # '.domain |= $d | .error |= null | .info |= $i | .phish |= true | .redirect |= $r | .source |= "Google Safe Browsing" | .url |= $u'
-    exit 0
-fi
-
-echo "{\"domain\":\"$domain\",\"error\":null,\"phish\":false,\"redirect\":$redirect,\"source\":null,\"url\":\"$url\"}"
-# jq -cn --arg d "$domain" --argjson i "$info" --argjson r "$redirect" --arg u "$url" \
-# '.domain |= $d | .error |= null | .info |= $i | .phish |= false | .redirect |= $r | .source |= null | .url |= $u'
+exit 0
