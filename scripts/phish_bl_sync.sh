@@ -12,7 +12,7 @@ if [[ -z "$@" ]]; then
   if [[ -z "$dt" ]]; then
     dt="3600"
   fi
-  # get list of phishing domains added in the last hour from phish.sinking.yachts and output to /home/webhookd/out/.yachts
+  # get list of phishing domains added in the last $dt seconds from phish.sinking.yachts and output to /home/webhookd/out/.yachts
   curl -sL "https://phish.sinking.yachts/v2/recent/$dt" -H 'X-Identity: Syretia (https://syretia.cf/docs)' | \
   | jq -c '[.[].domains[]]' 2>/dev/null > /home/webhookd/out/.yachts
   # check if file exists and is valid JSON
