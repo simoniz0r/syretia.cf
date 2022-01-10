@@ -13,7 +13,7 @@ if [[ -f "/home/webhookd/out/.yachts" ]] && jq '.' /home/webhookd/out/.yachts &>
         cat /home/webhookd/out/.yachts | jq -c --argfile bl /home/webhookd/jsonlite/domains/blacklist \
         '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/blacklist
         # output status
-        jq -cn --arg l "$(jq -r 'length' /home/webhookd/jsonlite/domains/blacklist)" '.status |= "Phishing domain blacklist updated.  Contains $l entries."'
+        jq -cn --arg l "$(jq -r 'length' /home/webhookd/jsonlite/domains/blacklist)" '.status |= "Phishing domain blacklist updated." | .length |= $l'
 else
         # output error
         jq -cn '.error |= "Error fetching https://phish.sinking.yachts/v2/all"'
