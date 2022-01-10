@@ -16,7 +16,8 @@ if [[ -z "$@" ]]; then
           # combine /home/webhookd/out/.yachts and /home/webhookd/jsonlite/domains/blacklist
           # then sort, filter out duplicates, and filter out entries that start with 'www.'
           cat /home/webhookd/out/.yachts | jq -c --argfile bl /home/webhookd/jsonlite/domains/blacklist \
-          '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/blacklist
+          '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/.blacklist
+          mv /home/webhookd/jsonlite/domains/.blacklist /home/webhookd/jsonlite/domains/blacklist
           # output status
           jq -cn --arg l "$(jq -r 'length' /home/webhookd/jsonlite/domains/blacklist)" '.status |= "Phishing domain blacklist updated." | .length |= $l'
   else
