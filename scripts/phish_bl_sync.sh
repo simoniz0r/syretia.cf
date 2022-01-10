@@ -14,7 +14,7 @@ if [[ -z "$@" ]]; then
   fi
   # get list of phishing domains added in the last $dt seconds from phish.sinking.yachts and output to /home/webhookd/out/.yachts
   curl -sL "https://phish.sinking.yachts/v2/recent/$dt" -H 'X-Identity: Syretia (https://syretia.cf/docs)' | \
-  | jq -c '[.[].domains[]]' 2>/dev/null > /home/webhookd/out/.yachts
+  jq -c '[.[].domains[]]' 2>/dev/null > /home/webhookd/out/.yachts
   # check if file exists and is valid JSON
   if [[ -f "/home/webhookd/out/.yachts" && "$(jq 'length' /home/webhookd/out/.yachts 2>/dev/null || echo -n '0')" != "0" ]]; then
           # combine /home/webhookd/out/.yachts and /home/webhookd/jsonlite/domains/blacklist
