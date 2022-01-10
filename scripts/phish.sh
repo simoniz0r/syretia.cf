@@ -3,7 +3,7 @@
 ;# Author: Syretia
 ;# License: MIT
 ;# Dependencies: rl_json, TclCurl
-;# Description: Uses phish.sinking.yachts and Google Safe Browsing to check if a 'url' is flagged for phishing
+;# Description: Uses data fetched from phish.sinking.yachts and Google Safe Browsing to check if a 'url' is flagged for phishing
 
 ;# yes, this is a Tcl script even though it has a '.sh' extension
 ;# webhookd doesn't work with '.tcl' file extensions :(
