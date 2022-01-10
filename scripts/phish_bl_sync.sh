@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # only allow blargbot
-if [[ "$cf_connecting_ip" != "167.114.1.162" ]]; then
+ip_hash="$(echo -n "$cf_connecting_ip" | sha256sum | cut -f1 -d' ')"
+
+if [[ "$ip_hash" != "48bf3717248c376717c77b41e279aba6a32edcc3e9c8ca1a6ac36bc8dbb8fd66" ]]; then
   exit 250
 fi
 # get list of phishing domains from phish.sinking.yachts and output to /home/webhookd/out/.yachts
