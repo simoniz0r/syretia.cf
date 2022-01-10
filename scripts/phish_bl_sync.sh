@@ -50,5 +50,5 @@ else
     exit 0
   fi
   # add POST data to blacklist array
-  jq --argjson ar "$@" '. += $ar | sort' /home/webhookd/jsonlite/domains/blacklist
+  cat /home/webhookd/jsonlite/domains/blacklist | jq -c --argjson ar "$@" '. += $ar | sort | unique' > /home/webhookd/jsonlite/domains/blacklist
 fi
