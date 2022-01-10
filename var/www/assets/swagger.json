@@ -25,7 +25,7 @@
             "POST"
           ],
           "summary": "phish",
-          "description": "Uses [phish.sinking.yachts](https://phish.sinking.yachts/docs) and [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search) to check if the 'url' input is a phishing URL.",
+          "description": "Uses data fetched from [phish.sinking.yachts](https://phish.sinking.yachts/docs) and [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search) to check if the 'url' input is a phishing URL.",
           "externalDocs": {
             "description": "Source Code",
             "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/phish.sh"
