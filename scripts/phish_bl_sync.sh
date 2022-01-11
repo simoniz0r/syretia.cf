@@ -17,16 +17,18 @@ if [[ -z "$@" ]]; then
   jq -c '[.[].domains[]]' 2>/dev/null > /home/webhookd/out/.yachts
   # check if file exists and is valid JSON
   if [[ -f "/home/webhookd/out/.yachts" && "$(jq 'length' /home/webhookd/out/.yachts 2>/dev/null || echo -n '0')" != "0" ]]; then
-          # combine /home/webhookd/out/.yachts and /home/webhookd/jsonlite/domains/blacklist
-          # then sort, filter out duplicates, and filter out entries that start with 'www.'
-          cat /home/webhookd/out/.yachts | jq -c --argfile bl /home/webhookd/jsonlite/domains/blacklist \
-          '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/.blacklist
-          mv /home/webhookd/jsonlite/domains/.blacklist /home/webhookd/jsonlite/domains/blacklist
-          # output status
-          jq -cn --arg l "$(jq -r 'length' /home/webhookd/jsonlite/domains/blacklist)" '.status |= "Phishing domain blacklist updated." | .length |= $l'
+    # combine /home/webhookd/out/.yachts and /home/webhookd/jsonlite/domains/blacklist
+    # then sort, filter out duplicates, and filter out entries that start with 'www.'
+    cat /home/webhookd/out/.yachts | jq -c --argfile bl /home/webhookd/jsonlite/domains/blacklist \
+    '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/.blacklist
+    mv /home/webhookd/jsonlite/domains/.blacklist /home/webhookd/jsonlite/domains/blacklist
+    # output status
+    jq -cn --arg l "$(jq -r 'length' /home/webhookd/jsonlite/domains/blacklist)" '.status |= "Phishing domain blacklist updated." | .length |= $l'
+  elif [[ ! -f "/home/webhookd/out/.yachts" ]]; then
+    # output error
+    jq -cn '.error |= "Failed to fetch https://phish.sinking.yachts/v2/all"'
   else
-          # output error
-          jq -cn '.error |= "Error fetching https://phish.sinking.yachts/v2/all"'
+    jq -cn --arg l "$(jq 'length' /home/webhookd/out/.yachts 2>/dev/null)" '.status |= "No new phishing domains found." | .length |= $l'
   fi
   # remove /home/webhookd/out/.yachts
   rm -rf /home/webhookd/out/.yachts
