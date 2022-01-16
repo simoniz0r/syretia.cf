@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -rf /home/webhookd/logs/*
+rm -r /home/webhookd/logs/*
 
 printf "%s\n" "[$(curl -sL -u \
 "zyp_user:zyp_password_1" \
