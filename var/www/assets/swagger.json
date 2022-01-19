@@ -15,7 +15,7 @@
     },
     "externalDocs": {
       "description": "GitHub",
-      "url": "https://github.com/simoniz0r/syretia.xyz"
+      "url": "https://github.com/simoniz0r/syretia.cf"
     },
     "host": "syretia.xyz",
     "paths": {
@@ -28,7 +28,7 @@
           "description": "Uses data fetched from [phish.sinking.yachts](https://phish.sinking.yachts/docs) and [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search) to check if the 'url' input is a phishing URL.",
           "externalDocs": {
             "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.xyz/blob/main/scripts/phish.sh"
+            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/phish.sh"
           },
           "operationId": "phish",
           "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/phish?url=https%3A%2F%2Ftestsafebrowsing.appspot.com&info=false'"}],
@@ -82,7 +82,7 @@
           "description": "Returns connection info for a given 'url'",
           "externalDocs": {
             "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.xyz/blob/main/scripts/status.sh"
+            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/status.sh"
           },
           "operationId": "status",
           "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/status?url=https%3A%2F%2Flists.opensuse.org%2Farchives%2F'"}],
@@ -174,7 +174,7 @@
           "description": "Converts a 'url' containing an XML document to JSON",
           "externalDocs": {
             "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.xyz/blob/main/scripts/xml2json.sh"
+            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/xml2json.sh"
           },
           "operationId": "xml2json",
           "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/xml2json?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"}],
