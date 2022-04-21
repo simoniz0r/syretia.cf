@@ -1,109 +1,100 @@
-#!/bin/bash
-# script used by 'webhookd' to execute bash script under restricted 'webhookd' user
-# 'webhookd' user can only write to '/home/webhookd/runner', and this dir is cleared after each run
+#!/usr/bin/tclsh
 
-# function to run script that contains user input
-bash_api() {
-    # set process limit to 30 and cpu time to 15
-    ulimit -u 30 -t 15
-    # create dummy 'ulimit' function to disable setting ulimit in script
-    ulimit(){ echo "nope"; }
-    # create script containing input
-    printf "%s\n" "$program" > /home/webhookd/runner/bash/"$dir_name"/bashrun
-    # printf "%s\n" "export exitcode=$?" >> /home/webhookd/runner/bash/"$dir_name"/bashrun
-	# load in custom variables and functions
-	source /home/syretia/git/syretia.cf/scripts/.bashrc
-    # cd to only dir 'webhookd' user can write to
-    cd /home/webhookd/runner/bash/"$dir_name/run"
-    # set start time
-    start_time="$(date +%s%N)"
-    # run script
-	if [[ -n "$stdin" ]]; then
-		printf "%s\n" "$stdin" | source ../bashrun
-	else
-    	source ../bashrun
-    fi
-    # set exit code for json output
-    exitcode=$?
-    # set end time
-    end_time="$(date +%s%N)"
-    # calculate total run time based on start and end time for json output
-    time="$(awk "BEGIN {printf \"%.3f\n\", ($end_time - $start_time) / 1000000000}")s"
+# load rl_json package and import it so it can be used as 'json'
+package require rl_json
+namespace import rl_json::json
+
+# check if environment variable x_api_key exists
+if {[info exists env(x_api_key)] == 0} {
+	# set hash to null if doesn't exist
+	set hash null
+} else {
+	# set hash to sha256sum of x_api_key
+	set hash [lindex [split [exec echo $env(x_api_key) | sha256sum] { }] 0]
 }
 
-# function to get the results from running the script and output them as json
-bash_results() {
-    # get stdout from file and remove colors
-    stdout="$(cat /home/webhookd/runner/bash/"$dir_name"/bashstdout | sed -r 's/\x1B(\[[0-9;]*[JKmsu]|\(B)//g')"
-    # get stderr from file and remove colors
-    stderr="$(cat /home/webhookd/runner/bash/"$dir_name"/bashstderr | sed -r 's/\x1B(\[[0-9;]*[JKmsu]|\(B)//g')"
-    # get log number
-    log_num="$(ls /home/webhookd/logs/bash_*.txt | cut -f2 -d'_' | sort -nr | head -n 1)"
-    # use jq to output json containing input, stdout, stderr, exit code, and run time
-    jq -n --arg pg "$program" --arg si "$stdin" --arg so "$stdout" --arg se "$stderr" --arg ex "$exitcode" --arg tm "$time" --arg ln "$log_num" '{"program":$pg,"stdin":$si,"stdout":$so,"stderr":$se,"exit":$ex,"time":$tm,"logNum":$ln}'
-    # remove any files that were created during run
-    rm -rf /home/webhookd/runner/bash/"$dir_name"
+# check if hash matches WHD_AUTH_HASH environment variable
+if {$hash != $env(WHD_AUTH_HASH)} {
+	# exit if not matching
+	set er [list string "Not authorized: $hash"]
+	puts [json object error $er]
+	exit 0
 }
 
-# convert key input to sha256sum
-key_hash="$(printf "%s\n" "$key" | sha256sum | cut -f1 -d' ')"
-# unset key input so cannot be seen by running script
-unset key
-unset WHD_DISCORD_TOKEN
-# compare input key hash to stored key hash
-case "$key_hash" in
-    "$WHD_AUTH_HASH")
-        # successful authorization
-        sleep 0
-        ;;
-    *)
-        # failed authorization
-        echo '{"error":"Invalid authorization."}' | jq '.'
-        exit
-        ;;
-esac
-            
-# check if user input is from URL or sent as data
-if [[ -z "$program" ]]; then
-	if [[ "$(printf "%s\n" "$@" | jq -r '.program' 2> /dev/null)" != "" ]]; then
-		program="$(printf "%s\n" "$@" | jq -r .program)"
-		if [[ "$(printf "%s\n" "$@" | jq -r '.stdin')" != "null" ]]; then
-			stdin="$(printf "%s\n" "$@" | jq -r '.stdin')"
-		fi
-	else
-    	program="$@"
-    fi
-fi
-# create directory for current instance
-dir_name="$(date +%s)_$RANDOM"
-mkdir -p /home/webhookd/runner/bash/"$dir_name"/run
-# remove any files created in /tmp
-mapfile -t tmp_files < <(ls -al /tmp | grep 'webhookd' | awk '{print $9}')
-for tmp_file in "${tmp_files[@]}"; do
-	if [[ -z "$tmp_file" ]]; then
-		break
-	fi
-	rm -rf /tmp/"$tmp_file"
-done
-# remove any files left behind in case process was killed by webhookd
-for dir in $(ls -a /home/webhookd/runner/bash | tail -n +3); do
-    # break if nothing
-    [[ -z "$dir" ]] && break
-    # get date dir was created by removing random string at end
-    dir_date="$(echo "$dir" | cut -f1 -d'_' | grep '[0-9]')"
-    # check if is directory and dir_date variable is 10 chars long
-    if [[ -d "/home/webhookd/runner/bash/$dir" && "${#dir_date}" -eq "10" ]]; then
-        # delete if is dir and older than 10 seconds
-        if [[ "$(($(date +%s)-$dir_date))" -gt "10" ]]; then
-            rm -rf /home/webhookd/runner/bash/"$dir"
-        fi
-    # else remove any other junk left behind
-    else
-        rm -rf /home/webhookd/runner/bash/"$dir"
-    fi
-done
-# run script based on user input and send stdout and stderr to files
-bash_api 1> /home/webhookd/runner/bash/"$dir_name"/bashstdout 2> /home/webhookd/runner/bash/"$dir_name"/bashstderr
-# get results and output json
-bash_results 2> /dev/null
-rm -rf /home/webhookd/logs/*
+# get json from input
+set json [lindex $argv 0]
+# get program and stdin from json and base64 decode them
+if {[catch {set program [binary decode base64 [json get $json program]]}] != 0} {
+	# output error and exit if missing program
+	set er [list string "Missing required values"]
+	puts [json object error $er]
+	exit 0
+}
+if {[catch {set stdin [binary decode base64 [json get $json stdin]]}] != 0} {
+	# set stdin to empty value if not present in $json
+	set stdin {}
+}
+
+# check if $stdin is set and setup $command
+# $command loads .bashrc file, runs $program,  and removes any files written wile running
+if {$stdin != {}} {
+	# if $stdin is set, redirect it to $program
+	set command "cd ~/runner/bash; \
+	source /home/syretia/git/syretia.cf/scripts/.bashrc; \
+	$program <<<$stdin; \
+	exit_status=\"$?\"; \
+	rm -rf ~/runner/bash/*
+	exit \$exit_status"
+} else {
+	# else just run $program
+	set command "cd ~/runner/bash; \
+	source /home/syretia/git/syretia.cf/scripts/.bashrc; \
+	$program; \
+	exit_status=\"$?\"; \
+	rm -rf ~/runner/bash/*
+	exit \$exit_status"
+}
+
+# set start time in milliseconds
+set start_time [clock milliseconds]
+
+# run $command using bash
+# set default values
+set exit_status 0
+set standard_error {}
+set standard_output {}
+# run command and catch any non-zero exit
+if {[catch {exec bash -c -- "$command"} output] != 0} {
+	global errorCode
+	# get $exit_status from end of $errorCode
+	set exit_status [lindex $errorCode end]
+	# $standard_error is last line of output
+	set standard_error [lindex [split $output "\n"] end]
+	# $standard_output is all lines except last of output
+	set standard_output [join [lrange [split $output "\n"] 0 end-1] "\n"]
+} else {
+	# $standard_output is output
+	set standard_output $output
+}
+
+# get time in seconds that bash ran
+set end_time [format "%.3f" [expr [expr [clock milliseconds] - $start_time] / 1000.0]]
+
+# setup variables for JSON response output
+set pgm [list string $program]
+set sti [list string $stdin]
+set stdout [list string $standard_output]
+set stderr [list string $standard_error]
+set ex [list string $exit_status]
+set time [list string $end_time]
+
+# output JSON response
+puts [json object \
+program $pgm \
+stdin $sti \
+stdout $stdout \
+stderr $stderr \
+exit $ex \
+time $time]
+
+exit 0
