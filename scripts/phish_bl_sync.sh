@@ -19,7 +19,7 @@ if [[ -z "$@" ]]; then
   if [[ -f "/home/webhookd/out/.yachts" && "$(jq 'length' /home/webhookd/out/.yachts 2>/dev/null || echo -n '0')" != "0" ]]; then
     # combine /home/webhookd/out/.yachts and /home/webhookd/jsonlite/domains/blacklist
     # then sort, filter out duplicates, and filter out entries that start with 'www.'
-    cat /home/webhookd/out/.yachts | jq -c --argfile bl /home/webhookd/jsonlite/domains/blacklist \
+    cat /home/webhookd/out/.yachts | jq --argfile bl /home/webhookd/jsonlite/domains/blacklist \
     '[. + $bl | sort | unique | .[] | select(. | test("^www\\.") | not)]' > /home/webhookd/jsonlite/domains/.blacklist
     mv /home/webhookd/jsonlite/domains/.blacklist /home/webhookd/jsonlite/domains/blacklist
     # output status
@@ -57,6 +57,6 @@ else
     exit 0
   fi
   # add POST data to blacklist array
-  cat /home/webhookd/jsonlite/domains/blacklist | jq -c --argjson ar "$@" '. += $ar | sort | unique' > /home/webhookd/jsonlite/domains/.blacklist
+  cat /home/webhookd/jsonlite/domains/blacklist | jq --argjson ar "$@" '. += $ar | sort | unique' > /home/webhookd/jsonlite/domains/.blacklist
   mv /home/webhookd/jsonlite/domains/.blacklist /home/webhookd/jsonlite/domains/blacklist
 fi
