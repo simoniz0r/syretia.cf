@@ -1,0 +1,16 @@
+[Unit]
+Description=Run webhookd as webhookd user at startup
+DefaultDependencies=no
+After=network.target
+
+[Service]
+Type=simple
+User=webhookd
+ExecStart=/home/syretia/git/syretia.cf/webhookdstart
+ExecStop=pkill webhookd
+TimeoutStartSec=0
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=default.target
