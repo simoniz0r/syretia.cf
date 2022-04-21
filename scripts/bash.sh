@@ -43,7 +43,7 @@ if {$stdin != {}} {
 	source /home/syretia/git/syretia.cf/scripts/.bashrc; \
 	$program <<<$stdin; \
 	exit_status=\"$?\"; \
-	rm -rf ~/runner/bash/*
+	rm -rf ~/runner/bash/*; \
 	exit \$exit_status"
 } else {
 	# else just run $program
@@ -51,7 +51,7 @@ if {$stdin != {}} {
 	source /home/syretia/git/syretia.cf/scripts/.bashrc; \
 	$program; \
 	exit_status=\"$?\"; \
-	rm -rf ~/runner/bash/*
+	rm -rf ~/runner/bash/*; \
 	exit \$exit_status"
 }
 
