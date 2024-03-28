@@ -42,7 +42,7 @@ if [[ "$(echo "$body" | wc -c)" -ge "50000" ]]; then
 	json="$(echo "$json" | jq '.errormsg += "Body exceeded max length. Dumped to file."')"
 	unixtime="$(date +%s)"
 	echo "$body" > /home/webhookd/out/"$unixtime"
-	body="https://bak.syretia.xyz/wiki/out/$unixtime"
+	body="https://out.syretia.xyz/$unixtime"
 fi
 # add headers to json
 json="$(echo "$json" | jq --arg h "$headers" '.headers += $h')"
