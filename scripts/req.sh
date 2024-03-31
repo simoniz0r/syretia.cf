@@ -16,17 +16,17 @@ sed -e ':b; s/^\([^=]*\)*_/\1-/; tb;' | perl -pe "s%=%: %g")"
 # if raw is true, do not output in json format (useful if body is more than 50k chars)
 if [[ "$raw" == "true" ]]; then
   if [[ -n "$@" ]]; then
-    curl -sL"$f"X "$x" "$url"  --max-time 5 --data-binary "$@" -H @<(echo "$HEADERS") 2>/dev/null || true
+    curl -sL"$f"X "$x" "$url"  --max-time 50 --data-binary "$@" -H @<(echo "$HEADERS") 2>/dev/null || true
   else
-    curl -sL"$f"X "$x" "$url"  --max-time 5 -H @<(echo "$HEADERS") 2>/dev/null || true
+    curl -sL"$f"X "$x" "$url"  --max-time 50 -H @<(echo "$HEADERS") 2>/dev/null || true
   fi
   exit 0
 fi
 # make request with body from request if present and reverse using tac for easier parsing
 if [[ -n "$@" ]]; then
-  REQ="$(curl -w '\n# CURL JSON\n%{json}\n' -sLi"$f"X "$x" "$url"  --max-time 5 --data-binary "$@" -H @<(echo "$HEADERS") 2>/dev/null | tac || true)"
+  REQ="$(curl -w '\n# CURL JSON\n%{json}\n' -sLi"$f"X "$x" "$url"  --max-time 50 --data-binary "$@" -H @<(echo "$HEADERS") 2>/dev/null | tac || true)"
 else
-  REQ="$(curl -w '\n# CURL JSON\n%{json}\n' -sLi"$f"X "$x" "$url"  --max-time 5 -H @<(echo "$HEADERS") 2>/dev/null | tac || true)"
+  REQ="$(curl -w '\n# CURL JSON\n%{json}\n' -sLi"$f"X "$x" "$url"  --max-time 50 -H @<(echo "$HEADERS") 2>/dev/null | tac || true)"
 fi
 # get json from first line of curl's output and use jq to delete irrelevent keys
 json="$(echo "$REQ" | head -n 1 | \
@@ -39,12 +39,14 @@ headers="$(echo "$REQ" | awk '/^\r$/,/^$/' | tac | jq -Rs 'split("\r\n") | .[0:-
 body="$(echo "$REQ" | awk '/^# CURL JSON/,/^\r$/' | tac | head -n -1 | tail -n +2)"
 # truncate body and set errormsg if 50k chars or more
 if [[ "$(echo "$body" | wc -c)" -ge "50000" ]]; then
-	json="$(echo "$json" | jq '.errormsg += "Body exceeded max length. Dumped to file."')"
-	unixtime="$(date +%s)"
-	echo "$body" > /home/webhookd/out/"$unixtime"
-	body="https://out.syretia.xyz/$unixtime"
+	json="$(echo "$json" | jq '.errormsg += "Body exceeded max length. Dumped to file. See body for URL."')"
+	timehash="$(date +%s | md5sum | cut -f1 -d' ')"
+	echo "$body" > /home/webhookd/out/"$timehash"
+	body="https://out.syretia.xyz/$timehash"
+	# systemd-run --user --on-active=600 "rm /home/webhookd/out/$timehash"
 fi
 # add headers to json
-json="$(echo "$json" | jq --arg h "$headers" '.headers += $h')"
+json="$(echo "$json" | dasel put -r json -s '.headers' -t json -v "$headers")"
+# json="$(echo "$json" | jq --arg h "$headers" '.headers += $h')"
 # output results using dasel to put the body into curl's json
-echo "$json" | jq --arg b "$body" '.body += $b'
+echo "$json" | jq -S --arg b "$body" '.body += $b'
