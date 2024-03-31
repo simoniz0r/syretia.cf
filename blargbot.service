@@ -1,0 +1,13 @@
+[Unit]
+Description=Run blargbot as syretia user at startup
+After=network.target
+
+[Service]
+Type=simple
+User=syretia
+ExecStart=/usr/local/bin/node /home/syretia/git/blargbot/index.js
+WorkingDirectory=/home/syretia/git/blargbot
+Restart=always
+
+[Install]
+WantedBy=default.target
