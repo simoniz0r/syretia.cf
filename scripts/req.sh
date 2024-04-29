@@ -3,6 +3,8 @@
 # gets headers and body that were set by blargbot's request and reroutes them to the given url
 # requires curl (version 7.80.0 or greater) and jq
 
+rm -rf /home/webhookd/logs/*
+
 # only work with blargbot's IP
 ip_hash="$(echo -n "$cf_connecting_ip" | sha256sum | cut -f1 -d' ')"
 if [[ "$ip_hash" != "48bf3717248c376717c77b41e279aba6a32edcc3e9c8ca1a6ac36bc8dbb8fd66" && "$ip_hash" != "83bdcd6058addb51543a5fcd5008f342bc7b09921a3be27af5569eeac936db10" && "$ip_hash" != "8829af3e4b753df9402a72a2ae1d88fc11fd7b96129c6ee58de9b984d57ba6f9" ]]; then
