@@ -8,7 +8,7 @@
 
 rm -rf /home/webhookd/logs/*
 
-if [[ -n "$u" ]]; then
+if [[ -n "$url" ]]; then
 	u="$url"
 fi
 
