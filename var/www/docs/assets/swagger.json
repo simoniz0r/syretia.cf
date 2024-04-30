@@ -1,245 +1,74 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "description": "Syretia's API for things and such. All endpoints have a 10 second timeout limit. 'GET' requests can also be used, but the data will be returned in [Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) format.  'POST' returns chunked data.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.",
-      "version": "2022.01.09",
-      "title": "Syretia.xyz",
-      "contact": {
-        "name": "Syretia",
-        "url": "https://syretia.xyz"
-      },
-      "license": {
-        "name": "MIT",
-        "url": "https://www.mit.edu/~amini/LICENSE.md"
-      }
+  "swagger": "2.0",
+  "info": {
+    "description": "Syretia's API for things and such. All endpoints have a 60 second timeout limit.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.",
+    "version": "2024.04.30",
+    "title": "Syretia.xyz",
+    "contact": {
+      "name": "Syretia",
+      "url": "https://syretia.xyz"
     },
-    "externalDocs": {
-      "description": "GitHub",
-      "url": "https://github.com/simoniz0r/syretia.cf"
-    },
-    "host": "syretia.xyz",
-    "paths": {
-      "/phish": {
-        "post": {
-          "tags": [
-            "POST"
-          ],
-          "summary": "phish",
-          "description": "Uses data fetched from [phish.sinking.yachts](https://phish.sinking.yachts/docs) and [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search) to check if the 'url' input is a phishing URL.",
-          "externalDocs": {
-            "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/phish.sh"
-          },
-          "operationId": "phish",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/phish?url=https%3A%2F%2Ftestsafebrowsing.appspot.com&info=false'"}],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "url",
-              "in": "query",
-              "description": "URI encoded URL to scan",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "name": "info",
-              "in": "query",
-              "description": "Grab info about a domain from [uriscan.io](https://uriscan.io) and exit without running checks",
-              "required": false,
-              "type": "boolean",
-              "default": false
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "​ ​",
-              "examples": {
-                "text/plain (request timed out)": "error: signal: killed",
-                "application/json": {
-                  "domain": "testsafebrowsing.appspot.com",
-                  "error": null,
-                  "phish": true,
-                  "redirect": false,
-                  "source": "Google Safe Browsing",
-                  "url": "https://testsafebrowsing.appspot.com"
-                }
-              },
-              "schema": {
-                "$ref": "#/definitions/phish_response_200"
-              }
-            }
+    "license": {
+      "name": "MIT",
+      "url": "https://www.mit.edu/~amini/LICENSE.md"
+    }
+  },
+  "externalDocs": {
+    "description": "GitHub",
+    "url": "https://github.com/simoniz0r/syretia.cf"
+  },
+  "host": "syretia.xyz",
+  "paths": {
+    "/xml2json": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "xml2json",
+        "description": "Converts a 'url' containing an XML document to JSON",
+        "externalDocs": {
+          "description": "Source Code",
+          "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/xml2json.sh"
+        },
+        "operationId": "xml2json",
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "source": "curl -s 'https://syretia.xyz/xml2json?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"
           }
-        }
-      },
-      "/status": {
-        "post": {
-          "tags": [
-            "POST"
-          ],
-          "summary": "status",
-          "description": "Returns connection info for a given 'url'",
-          "externalDocs": {
-            "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/status.sh"
-          },
-          "operationId": "status",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/status?url=https%3A%2F%2Flists.opensuse.org%2Farchives%2F'"}],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "url",
-              "in": "query",
-              "description": "URI encoded URL to get info for",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "​ ​",
-              "examples": {
-                "text/plain (request timed out)": "error: signal: killed",
-                "application/json": {
-                  "content_type": "text/html; charset=utf-8",
-                  "curl_version": "libcurl/7.80.0 OpenSSL/1.1.1l zlib/1.2.11 libssh2/1.9.0 nghttp2/1.43.0",
-                  "errormsg": null,
-                  "exitcode": 0,
-                  "filename_effective": null,
-                  "ftp_entry_path": null,
-                  "headers": [
-                    "HTTP/2 200 ",
-                    "date: Sat, 08 Jan 2022 08:20:48 GMT",
-                    "content-type: text/html; charset=utf-8",
-                    "content-length: 50804",
-                    "vary: Accept-Language, Cookie",
-                    "content-language: en",
-                    "x-frame-options: SAMEORIGIN",
-                    "x-xss-protection: 1; mode=block",
-                    "x-content-type-options: nosniff",
-                    "referrer-policy: no-referrer-when-downgrade",
-                    "strict-transport-security: max-age=15768000"
-                  ],
-                  "http_code": 200,
-                  "http_connect": 0,
-                  "http_version": "2",
-                  "local_ip": null,
-                  "local_port": 55350,
-                  "method": "HEAD",
-                  "num_connects": 1,
-                  "num_headers": 10,
-                  "num_redirects": 0,
-                  "proxy_ssl_verify_result": 0,
-                  "redirect_url": null,
-                  "referer": null,
-                  "remote_ip": "195.135.221.140",
-                  "remote_port": 443,
-                  "response_code": 200,
-                  "scheme": "HTTPS",
-                  "size_download": 0,
-                  "size_header": 353,
-                  "size_request": 88,
-                  "size_upload": 0,
-                  "speed_download": 0,
-                  "speed_upload": 0,
-                  "ssl_verify_result": 0,
-                  "time_appconnect": 0.347583,
-                  "time_connect": 0.225281,
-                  "time_namelookup": 0.123866,
-                  "time_pretransfer": 0.347883,
-                  "time_redirect": 0,
-                  "time_starttransfer": 0.573323,
-                  "time_total": 0.573418,
-                  "url": "https://lists.opensuse.org/archives/",
-                  "url_effective": "https://lists.opensuse.org/archives/",
-                  "urlnum": 0
-                }
-              },
-              "schema": {
-                "type": "application/json"
-              }
-            }
-          }
-        }
-      },
-      "/xml2json": {
-        "post": {
-          "tags": [
-            "POST"
-          ],
-          "summary": "xml2json",
-          "description": "Converts a 'url' containing an XML document to JSON",
-          "externalDocs": {
-            "description": "Source Code",
-            "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/xml2json.sh"
-          },
-          "operationId": "xml2json",
-          "x-codeSamples": [{ "lang": "Shell", "source": "curl -sX POST 'https://syretia.xyz/xml2json?url=https%3A%2F%2Fwww.w3schools.com%2Fxml%2Fnote.xml'"}],
-          "produces": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "name": "url",
-              "in": "query",
-              "description": "URI encoded URL to an XML document",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "​ ​",
-              "examples": {
-                "text/plain (request timed out)": "error: signal: killed",
-                "application/json": {
-                  "note": {
-                    "to": "Tove",
-                    "from": "Jani",
-                    "heading": "Reminder",
-                    "body": "Don't forget me this weekend!"
-                  }
-                }
-              },
-              "schema": {
-                "type": "application/json"
-              }
-            }
-          }
-        }
-      }
-    },
-    "definitions": {
-      "phish_response_200": {
-        "type": "object",
-        "properties": {
-          "domain": {
-            "type": "string",
-            "example": "testsafebrowsing.appspot.com"
-          },
-          "error": {
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "description": "URI encoded URL to an XML document",
+            "required": true,
             "type": "string"
-          },
-          "phish": {
-            "type": "boolean",
-            "example": true
-          },
-          "redirect": {
-            "type": "boolean",
-            "example": false
-          },
-          "source": {
-            "type": "string",
-            "example": "Google Safe Browsing"
-          },
-          "url": {
-            "type": "string",
-            "example": "https://testsafebrowsing.appspot.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "​ ​",
+            "examples": {
+              "text/plain (request timed out)": "error: signal: killed",
+              "application/json": {
+                "note": {
+                  "to": "Tove",
+                  "from": "Jani",
+                  "heading": "Reminder",
+                  "body": "Don't forget me this weekend!"
+                }
+              }
+            },
+            "schema": {
+              "type": "application/json"
+            }
           }
         }
       }
     }
   }
+}
