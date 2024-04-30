@@ -1,5 +1,9 @@
 #!/bin/bash
-# Ubuntu package search
+# Name: ubuntu
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, jq, pup
+# Description: Ubuntu package search
 
 pkg_name="$(curl -sL "https://packages.ubuntu.com/search?suite=focal&searchon=names&keywords=$q" | \
 pup 'a attr{href}' | \

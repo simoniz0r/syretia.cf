@@ -1,4 +1,9 @@
 #!/bin/bash
+# Name: imgix
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, jq
+# Description: saves an image in the directory that is visible to imgix
 
 rm -rf /home/webhookd/logs/*
 

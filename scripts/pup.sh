@@ -1,6 +1,9 @@
 #!/bin/bash
-# Get data from HTML websites without an API using CSS selectors
-# Requires curl, jq, pup
+# Name: pup
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, jq, pup
+# Description: Get data from HTML websites without an API using CSS selectors
 
 # remove logs
 rm -rf /home/webhookd/logs/*

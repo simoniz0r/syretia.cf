@@ -1,4 +1,9 @@
 #!/bin/bash
+# Name: obs_json
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, oq
+# Description: converts openSUSE OBS response from XML to JSON
 
 # path="$(echo "$@" | oq -r '.path | @uri')"
 

@@ -1,7 +1,9 @@
 #!/bin/bash
-# intended to work with the 'req' tag with blargbot
-# gets headers and body that were set by blargbot's request and reroutes them to the given url
-# requires curl (version 7.80.0 or greater) and jq
+# Name: req
+# Author: Syretia
+# License: MIT
+# Dependencies: curl,  pup
+# Description: gets headers and body that were set by blargbot's request and reroutes them to the given url
 
 rm -rf /home/webhookd/logs/*
 

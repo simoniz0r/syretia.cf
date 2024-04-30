@@ -1,5 +1,9 @@
 #!/bin/bash
-# Debian package search
+# Name: debian
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, jq, pup
+# Description: Debian package search
 
 pkg_name="$(curl -sL "https://packages.debian.org/search?suite=bullseye&searchon=names&keywords=$q" | \
 pup 'a attr{href}' | \

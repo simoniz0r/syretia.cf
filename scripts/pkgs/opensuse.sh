@@ -1,4 +1,9 @@
 #!/bin/bash
+# Name: opensuse
+# Author: Syretia
+# License: MIT
+# Dependencies: curl, oq
+# Description: openSUSE package search
 
 rm -rf /home/webhookd/logs/*
 
