@@ -1,9 +1,9 @@
 #!/bin/bash
-# Name: xml2json
+# Name: convert
 # Author: Syretia
 # License: MIT
 # Dependencies: curl, dasel
-# Description: converts a 'url' containing an XML document to JSON
+# Description: converts a 'url' 'from' a given format 'to' another
 
 # remove logs
 rm -rf /home/webhookd/logs/*
