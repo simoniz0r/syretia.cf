@@ -2,7 +2,7 @@
 # Name: req
 # Author: Syretia
 # License: MIT
-# Dependencies: curl,  pup
+# Dependencies: curl,  dasel, jq
 # Description: gets headers and body that were set by blargbot's request and reroutes them to the given url
 
 rm -rf /home/webhookd/logs/*
