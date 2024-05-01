@@ -20,6 +20,7 @@ grep -m1 "^/$release/" | \
 cut -f3 -d'/')"
 # exit if not found
 if [[ -z "$pkg_name" ]]; then
+	jq -n '.error |= "No results found"'
 	exit 0
 fi
 # get metadata from package page which has version, description, etc
