@@ -134,6 +134,118 @@
           }
         }
       }
+    },
+    "/pkgs/debian": {
+      "get": {
+        "tags": [
+          "api/v1"
+        ],
+        "summary": "debian",
+        "description": "Returns package search results from Debian's package site in JSON format",
+        "externalDocs": {
+          "description": "Source Code",
+          "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/api/v1/pkgs/debian.sh"
+        },
+        "operationId": "debian",
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "source": "curl -s 'https://syretia.xyz/api/v1/pkgs/debian?query=jq&release=bookworm'"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Package name to search for.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "release",
+            "in": "query",
+            "description": "Release to search in.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "​ ​",
+            "examples": {
+              "text/plain (request timed out)": "error: signal: killed",
+              "application/json": {
+                "name": "jq",
+                "description": "lightweight and flexible command-line JSON processor",
+                "info": "Debian,  bookworm, us, main, utils, 1.6-2.1",
+                "author": "Debian Webmaster, webmaster@debian.org"
+              }
+            },
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        }
+      }
+    },
+    "/pkgs/ubuntu": {
+      "get": {
+        "tags": [
+          "api/v1"
+        ],
+        "summary": "ubuntu",
+        "description": "Returns package search results from Ubuntu's package site in JSON format",
+        "externalDocs": {
+          "description": "Source Code",
+          "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/api/v1/pkgs/ubuntu.sh"
+        },
+        "operationId": "ubuntu",
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "source": "curl -s 'https://syretia.xyz/api/v1/pkgs/ubuntu?query=jq&release=noble'"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Package name to search for.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "release",
+            "in": "query",
+            "description": "Release to search in.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "​ ​",
+            "examples": {
+              "text/plain (request timed out)": "error: signal: killed",
+              "application/json": {
+                "name": "jq",
+                "description": "lightweight and flexible command-line JSON processor",
+                "info": "Ubuntu,  noble, us, main, utils, 1.7.1-3build1",
+                "author": "Rhonda D&#39;Vine, rhonda@ubuntu.com"
+              }
+            },
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        }
+      }
     }
   }
 }
