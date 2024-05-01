@@ -11,7 +11,7 @@ if [[ -n "$q" ]]; then
 fi
 # set release to bookworm if not set
 if [[ -z "$release" ]]; then
-	release="$release"
+	release="noble"
 fi
 # scrape package name from search results
 pkg_name="$(curl -sL "https://packages.ubuntu.com/search?suite=$release&searchon=names&keywords=$query" | \
