@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Syretia's API for things and such. All endpoints have a 60 second timeout limit.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.  Base path for all endpoints is `/api/v1`.",
-    "version": "2024.04.30",
-    "title": "Syretia.xyz",
+    "description": "All endpoints have a 60 second timeout limit.  Uses [webhookd](https://github.com/ncarlier/webhookd) as the backend server.",
+    "version": "v1",
+    "title": "Syretia.xyz API Docs",
     "contact": {
       "name": "Syretia",
-      "url": "https://syretia.xyz/w/"
+      "url": "https://syretia.xyz/api/v1"
     },
     "license": {
       "name": "MIT",
@@ -14,16 +14,13 @@
     }
   },
   "externalDocs": {
-    "description": "GitHub",
-    "url": "https://github.com/simoniz0r/syretia.cf"
+    "description": "Syretia's Notes",
+    "url": "https://syretia.xyz/w/"
   },
   "host": "syretia.xyz/api/v1",
   "paths": {
     "/convert": {
       "get": {
-        "tags": [
-          "api/v1"
-        ],
         "summary": "convert",
         "description": "Converts a 'url' 'from' a given format 'to' another",
         "externalDocs": {
@@ -86,9 +83,6 @@
     },
     "/pkgs/debian": {
       "get": {
-        "tags": [
-          "api/v1"
-        ],
         "summary": "debian",
         "description": "Returns package search results from Debian's package site in JSON format",
         "externalDocs": {
@@ -142,9 +136,6 @@
     },
     "/pkgs/opensuse": {
       "get": {
-        "tags": [
-          "api/v1"
-        ],
         "summary": "opensuse",
         "description": "Returns package search results from openSUSE's API in JSON format",
         "externalDocs": {
@@ -198,9 +189,6 @@
     },
     "/pkgs/ubuntu": {
       "get": {
-        "tags": [
-          "api/v1"
-        ],
         "summary": "ubuntu",
         "description": "Returns package search results from Ubuntu's package site in JSON format",
         "externalDocs": {
