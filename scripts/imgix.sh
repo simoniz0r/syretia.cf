@@ -39,7 +39,7 @@ if [[ "$rand" != "false" ]]; then
 fi
 
 if [[ -n "$url" ]]; then
-	curl -sL --max-time 3 --show-error "$url" -o /home/webhookd/imgix/"$name" 2>&1 || exit 0
+	curl -sL --max-time 50 --show-error "$url" -o /home/webhookd/imgix/"$name" 2>&1 || exit 0
 fi
 
 if [[ "$temp" != "false" ]]; then

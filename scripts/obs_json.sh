@@ -14,6 +14,6 @@ fi
 
 path="$(echo "$path" | oq -Rr '@uri')"
 
-curl -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2F$path&obs_instance=openSUSE" 2>/dev/null | \
+curl --max-time 50 -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2F$path&obs_instance=openSUSE" 2>/dev/null | \
 oq -i xml -o json 2>/dev/null || \
 oq -n '.error |= "Failed to convert XML to JSON"'

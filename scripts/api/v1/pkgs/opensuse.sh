@@ -14,12 +14,12 @@ if [[ -n "$q" ]]; then
 fi
 
 # try searching for exact match first
-res="$(curl -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2Fsearch%2Fpublished%2Fbinary%2Fid%3Fmatch%3D%2540name%253D%2527$query%2527%26limit%3D0&obs_instance=openSUSE" | \
+res="$(curl --max-time 25 -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2Fsearch%2Fpublished%2Fbinary%2Fid%3Fmatch%3D%2540name%253D%2527$query%2527%26limit%3D0&obs_instance=openSUSE" | \
 oq -i xml -o json '[.collection.binary[] | select(."@baseproject" == "openSUSE:Factory") | select(."@arch" | test("(x86_64|noarch)"))]' 2>/dev/null)"
 
 # try fuzzy search if no exact match
 if [[ "$res" == "" ]]; then
-    res="$(curl -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2Fsearch%2Fpublished%2Fbinary%2Fid%3Fmatch%3Dcontains-ic%2528%2540name%252C%2B%2527$query%2527%2529%2B%26limit%3D0&obs_instance=openSUSE" | \
+    res="$(curl --max-time 25 -sL "https://opi-proxy.opensuse.org/?obs_api_link=https%3A%2F%2Fapi.opensuse.org%2Fsearch%2Fpublished%2Fbinary%2Fid%3Fmatch%3Dcontains-ic%2528%2540name%252C%2B%2527$query%2527%2529%2B%26limit%3D0&obs_instance=openSUSE" | \
     oq -i xml -o json '[.collection.binary[] | select(."@baseproject" == "openSUSE:Factory") | select(."@arch" | test("(x86_64|noarch)"))]' 2>/dev/null)"
 fi
 

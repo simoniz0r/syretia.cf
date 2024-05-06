@@ -5,15 +5,17 @@
 # Dependencies: curl, jq, pup
 # Description: output metadata for a given url in JSON format
 
-
+#remove logs
 rm -rf /home/webhookd/logs/*
 
-if [[ -n "$url" ]]; then
-	u="$url"
+# set url to u variable if present
+if [[ -n "$u" ]]; then
+	url="$u"
 fi
 
-if [[ -n "$u" ]]; then
-	curl --max-time 2.5 -A "$RANDOM$RANDOM" -sL "$u" | \
+# fetch url, use pup to get metadata, then filter using perl and jq
+if [[ -n "$url" ]]; then
+	curl --max-time 50 -A "$RANDOM$RANDOM" -sL "$url" | \
 	pup 'meta json{}' 2>&1 | \
 	perl -pe 's%^EOF$%\[\]%' | \
 	perl -pe 's%("property":|"http-equiv":)%"name":%g' | \
