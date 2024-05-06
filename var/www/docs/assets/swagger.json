@@ -191,6 +191,62 @@
         }
       }
     },
+    "/pkgs/opensuse": {
+      "get": {
+        "tags": [
+          "api/v1"
+        ],
+        "summary": "opensuse",
+        "description": "Returns package search results from openSUSE's API in JSON format",
+        "externalDocs": {
+          "description": "Source Code",
+          "url": "https://github.com/simoniz0r/syretia.cf/blob/main/scripts/api/v1/pkgs/opensuse.sh"
+        },
+        "operationId": "opensuse",
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "source": "curl -s 'https://syretia.xyz/api/v1/pkgs/opensuse?query=jq'"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Package name to search for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "​ ​",
+            "examples": {
+              "text/plain (request timed out)": "error: signal: killed",
+              "application/json": {
+                "@name": "jq",
+                "@project": "openSUSE:Factory",
+                "@package": "jq",
+                "@repository": "standard",
+                "@version": "1.7.1",
+                "@release": "1.3",
+                "@arch": "x86_64",
+                "@filename": "jq-1.7.1-1.3.x86_64.rpm",
+                "@filepath": "openSUSE:/Factory/standard/x86_64/jq-1.7.1-1.3.x86_64.rpm",
+                "@baseproject": "openSUSE:Factory",
+                "@type": "rpm"
+              }
+            },
+            "schema": {
+              "type": "application/json"
+            }
+          }
+        }
+      }
+    },
     "/pkgs/ubuntu": {
       "get": {
         "tags": [
