@@ -22,7 +22,7 @@ def main [...body] {
     let method = try { $env.hook_method } catch { |e| return $e.msg }
     let url = try { $env.url } catch { |e| return $e.msg }
     let headers = $env.x_headers? | default '["user-agent", "nushell"]'
-	# run http command based on method and output result as json
+    # run http command based on method and output result as json
     match $method {
         GET => { try { http get -fem 50 -H ($headers | from json) $url | to json -r } catch { |e| return $e.msg } }
         POST => { try { http post -fem 50 -H ($headers | from json) $url ($body | get 0) | to json -r } catch { |e| return $e.msg } }
