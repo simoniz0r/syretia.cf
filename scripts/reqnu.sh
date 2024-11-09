@@ -5,7 +5,7 @@
 # Dependencies: nushell, bcrypt-tool
 # Description: gets headers and body that were set by blargbot's request and reroutes them to the given url
 
-source /home/syretia/git/syretia.cf/scripts/.env.nu
+source /home/syretia/git/syretia.cf/.env.nu
 
 def main [...body] {
     # get credentials
