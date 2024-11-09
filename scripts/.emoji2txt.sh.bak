@@ -1,0 +1,19 @@
+#!/bin/bash
+
+uq="$(echo "$q" | perl -pe 's/\%([[:xdigit:]]{2})/chr hex $1/ge')"
+emojilist="$(curl -sL 'https://unicode.org/Public/emoji/12.0/emoji-test.txt')"
+
+for arg in $uq; do
+    unset text
+	unset check
+    check="$(echo "$arg" | tr -d '[:print:]')"
+    if [[ "$check" != "" ]]; then
+		text="$(echo "$emojilist" | grep -m1 "# $check " | cut -f2 -d'#' | cut -f3- -d' ')"
+	   	# text="$(/home/syretia/emoji2txt.py "$check" 2>/dev/null | grep -v 'CAPITAL LETTER' | grep -v 'SMALL LETTER' | grep -v 'ZERO WIDTH SPACE' | grep -v 'SOLIDUS' | tr '[:upper:]' '[:lower:]')"
+	fi
+    if [[ "$text" == "" ]]; then
+        echo "$arg"
+    else
+        echo "$text"
+    fi
+done | tr '\n' ' '

@@ -16,7 +16,7 @@ fi
 # get request headers from environment variables and tranform them into a format that curl can handle
 HEADERS="$(env | grep -E '^[a-z][a-z]+|^[a-z]_' | perl -pe 's%^(cdn_|cf_|x_forwarded_|hook_|connection=|content_length=|url=|accept_encoding=gzip).*%%g' | \
 sed '/^$/d' | perl -pe 'chomp if eof' | \
-sed -e ':b; s/^\([^=]*\)*_/\1-/; tb;' | perl -pe "s%=%: %g")"
+sed -e ':b; s/^\([^=]*\)*_/\1-/; tb;' | perl -pe "s%=%: %")"
 # if raw is true, do not output in json format (useful if body is more than 50k chars)
 if [[ "$raw" == "true" ]]; then
   if [[ -n "$@" ]]; then
@@ -42,13 +42,13 @@ headers="$(echo "$REQ" | awk '/^\r$/,/^$/' | tac | jq -Rs 'split("\r\n") | .[0:-
 # get body by removing headers and json from REQ
 body="$(echo "$REQ" | awk '/^# CURL JSON/,/^\r$/' | tac | head -n -1 | tail -n +2)"
 # truncate body and set errormsg if 50k chars or more
-if [[ "$(echo "$body" | wc -c)" -ge "50000" ]]; then
-	json="$(echo "$json" | jq '.errormsg += "Body exceeded max length. Dumped to file. See body for URL."')"
-	timehash="$(date +%s | md5sum | cut -f1 -d' ')"
-	echo "$body" > /home/webhookd/out/"$timehash"
-	body="https://out.syretia.xyz/$timehash"
+# if [[ "$(echo "$body" | wc -c)" -ge "50000" ]]; then
+#	json="$(echo "$json" | jq '.errormsg += "Body exceeded max length. Dumped to file. See body for URL."')"
+#	timehash="$(date +%s | md5sum | cut -f1 -d' ')"
+#	echo "$body" > /home/webhookd/out/"$timehash"
+#	body="https://out.syretia.xyz/$timehash"
 	# systemd-run --user --on-active=600 "rm /home/webhookd/out/$timehash"
-fi
+# fi
 # add headers to json
 json="$(echo "$json" | dasel put -r json -s '.headers' -t json -v "$headers")"
 # json="$(echo "$json" | jq --arg h "$headers" '.headers += $h')"

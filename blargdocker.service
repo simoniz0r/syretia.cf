@@ -1,0 +1,12 @@
+[Unit]
+Description=Run blargbot docker container as blarg user at startup
+After=network.target
+
+[Service]
+Type=simple
+User=blarg
+ExecStart=/usr/bin/docker compose up
+WorkingDirectory=/home/syretia/git/blargbot/.devcontainer
+
+[Install]
+WantedBy=default.target

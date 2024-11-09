@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User=syretia
+ExecStartPre=/bin/sleep 30
 ExecStart=/usr/local/bin/node /home/syretia/git/blargbot/index.js
 WorkingDirectory=/home/syretia/git/blargbot
 Restart=always
