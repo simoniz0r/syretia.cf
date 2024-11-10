@@ -1,5 +1,5 @@
 #!/usr/bin/env nu
-# Name: reqnu
+# Name: req
 # Author: Syretia
 # License: MIT
 # Dependencies: nushell
