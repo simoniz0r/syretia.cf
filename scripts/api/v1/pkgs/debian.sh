@@ -27,4 +27,4 @@ fi
 curl --max-time 25 -sL "https://packages.debian.org/$release/$pkg_name" | \
 pup 'meta json{}' | \
 jq --arg pn "$pkg_name" '{name: $pn, description: .[2].content, info: .[3].content, author: .[1].content}'
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*

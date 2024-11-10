@@ -6,7 +6,7 @@
 # Description: output metadata for a given url in JSON format
 
 #remove logs
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # set url to u variable if present
 if [[ -n "$u" ]]; then

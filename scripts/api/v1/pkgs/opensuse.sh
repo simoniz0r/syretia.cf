@@ -6,7 +6,7 @@
 # Description: openSUSE package search
 
 # remove logs
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # set query to q if present
 if [[ -n "$q" ]]; then

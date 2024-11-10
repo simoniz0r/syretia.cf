@@ -1,0 +1,10 @@
+[Unit]
+Description="webhookd cleanup timer"
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+Unit=webhookdcleanup.service
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,8 @@
+[Unit]
+Description="webhookd cleanup service"
+DefaultDependencies=no
+After=network.target
+
+[Service]
+User=webhookd
+ExecStart=/home/syretia/git/syretia.cf/webhookdcleanup

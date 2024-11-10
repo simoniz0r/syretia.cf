@@ -5,7 +5,7 @@
 # Dependencies: curl,  dasel, jq
 # Description: gets headers and body that were set by blargbot's request and reroutes them to the given url
 
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # only work with blargbot's IP
 ip_hash="$(echo -n "$cf_connecting_ip" | sha256sum | cut -f1 -d' ')"

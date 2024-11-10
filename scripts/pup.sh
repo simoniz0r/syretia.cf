@@ -6,7 +6,7 @@
 # Description: Get data from HTML websites without an API using CSS selectors
 
 # remove logs
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # if query uses url or path vars, set to u or p
 if [[ -n "$url" ]]; then

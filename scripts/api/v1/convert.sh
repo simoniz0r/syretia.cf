@@ -6,7 +6,7 @@
 # Description: converts a 'url' 'from' a given format 'to' another
 
 # remove logs
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # check if variables set
 if [[ -z "$from" || -z "$to" || -z "$url" ]]; then

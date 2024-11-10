@@ -6,7 +6,7 @@
 # Description: saves an image in the directory that is visible to imgix
 
 # remove logs
-rm -rf /home/webhookd/logs/*
+# rm -rf /home/webhookd/logs/*
 
 # convert key input to sha256sum
 key_hash="$(printf "%s\n" "$key" | sha256sum | cut -f1 -d' ')"
