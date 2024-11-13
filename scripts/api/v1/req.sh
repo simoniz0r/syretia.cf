@@ -26,6 +26,6 @@ def main [...body] {
         PUT => { try { http put -fem 50 -H ($headers | from json) $url ($body | get 0) | to json -r } catch { |e| return $e.msg } },
         DELETE => { try { http delete -fem 50 -H ($headers | from json) $url | to json -r } catch { |e| return $e.msg } },
         HEAD => { try { http head -m 50 -H ($headers | from json) $url | to json -r } catch { |e| return $e.msg } },
-    } | str replace -ra '7[0-9].[0-9][0-9][0-9].[0-9].[0-9][0-9]' 'syretia.xyz'
+    } | str replace -ra '7[0-9](\.|-)[0-9][0-9][0-9](\.|-)[0-9](\.|-)[0-9][0-9]' 'syretia.xyz'
     # replace ip in all outputs
 }
