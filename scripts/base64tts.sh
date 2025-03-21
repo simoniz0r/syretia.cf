@@ -19,7 +19,7 @@ def audiourl [voice text] {
 def weilbyte [voice text] {
     # setup body json
     let body = $text | wrap text | merge ($voice | wrap voice) | to json -r
-    # make http post request and bas64 encode result, fallback to cursecode if fails
+    # make http post request and bas64 encode result, fallback to weilnet if fails
     let base64 = try { http post -m 6 -H [content-type application/json] "https://tiktok-tts.weilbyte.dev/api/generate" $body | encode base64 } catch { return (weilnet $voice $text) }
     # wrap result for json otuput
     return ($base64 | prepend "data:audio/mp3;base64," | str join "" | wrap audioUrl)
@@ -29,7 +29,7 @@ def weilbyte [voice text] {
 def weilnet [voice text] {
     # setup body json
     let body = $text | wrap text | merge ($voice | wrap voice) | to json -r
-    # make http post request, fallback to weilbyte
+    # make http post request, fallback to cursecode if fails
     let req_json = try { http post -m 6 -H [content-type application/json] "https://tiktok-tts.weilnet.workers.dev/api/generation" $body } catch { return (cursecode $voice $text) }
     # prepend audio info and rename column
     let json = try { $req_json | upsert data { |row| $row.data | prepend "data:audio/mp3;base64," | str join "" } | rename -c {data: audioUrl} } catch { return (cursecode $voice $text) }
@@ -71,6 +71,22 @@ def uberduck [voice text] {
     return ($base64 | prepend "data:audio/wav;base64," | str join "" | wrap audioUrl | merge $audio_json)
 }
 
+# get TTS audio from Cerevoice
+def cerevoice [voice text] {
+    # setup body
+    let body = $text | prepend "<text>" | append "</text>" | str join ""
+    # setup url with voice as query
+    let url = "https://api.cerevoice.com/v2/demo?audio_format=ogg&voice=" | append $voice | append "-CereWave" | str join ""
+    # make http post request and bas64 encode result
+    let base64 = try {
+        http post -m 10 -H [content-type text/plain] $url $body | encode base64
+    } catch {
+        |e| return ($e.json | from json | wrap error)
+    }
+    # wrap result for json otuput
+    return ($base64 | prepend "data:audio/ogg;base64," | str join "" | wrap audioUrl)
+}
+
 # get TTS audio from lazypy
 def lazypy [voice service text] {
     # create body using url build-query
@@ -92,6 +108,7 @@ def tts [voice:string service:string text:string] {
     # route based on service
     let result = match $service {
         audiourl => { audiourl $voice $text },
+        Cerevoice => { cerevoice $voice $text },
         TikTok => { weilbyte $voice $text },
         uberduck => { uberduck $voice $text },
         _ => { lazypy $voice $service $text }
